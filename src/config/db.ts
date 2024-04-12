@@ -1,7 +1,5 @@
-// db.ts
 import mysql from "mysql";
 import util from "util";
-import 'dotenv/config';
 
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
