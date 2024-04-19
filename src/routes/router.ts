@@ -1,23 +1,19 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { query } from "@config/db";
+
+import tryCatch from "@utils/tryCatch";
+import resultHandler from "@middlewares/resultHandler";
 
 const router = express.Router();
 
-router.get("/panel", async (req: Request, res: Response) => {
-    console.log(process.env.DB_HOST)
-    const sqlSelect =
-        "SELECT * FROM partidos WHERE tipo = 0 ORDER BY progreso ASC, fecha ASC";
-    try {
+router.get(
+    "/panel",
+    tryCatch(async (req: Request, res: Response) => {
+        const sqlSelect =
+            "SELECT * FROM partidos WHERE tipo = 0 ORDER BY progreso ASC, fecha ASC";
         const result = await query(sqlSelect);
-        res.send({ status: 200, success: true, result: result });
-    } catch (err) {
-        res.send({
-            status: 500,
-            success: false,
-            reason: "Problema con la base de datos.",
-            error: err,
-        });
-    }
-});
+        resultHandler({ status: 200, success: true, result: result }, res);
+    })
+);
 
 export default router;
