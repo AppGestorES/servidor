@@ -9,11 +9,13 @@ const router = express.Router();
 router.get(
     "/panel",
     tryCatch(async (req: Request, res: Response) => {
-        const sqlSelect =
-            "SELECT * FROM partidos WHERE tipo = 0 ORDER BY progreso ASC, fecha ASC";
+        console.log("Preparando para ejecutar la consulta SQL");
+        const sqlSelect = "SELECT * FROM usuarios";
         const result = await query(sqlSelect);
+        console.log("Consulta SQL ejecutada");
         resultHandler({ status: 200, success: true, result: result }, res);
     })
 );
+
 
 export default router;
