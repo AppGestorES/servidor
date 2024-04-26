@@ -1,22 +1,16 @@
-import 'dotenv/config';
+import "dotenv/config";
 
 import express from "express";
 import cors from "cors";
-import helmet from 'helmet';
-import morgan from 'morgan';
+import helmet from "helmet";
+import morgan from "morgan";
 
-import errorHandler from '@middlewares/errorHandler';
-
-import path from "path";
-import { loadRoutes } from "@utils/loadRoutes";
+import router from "@routes/router";
+import errorHandler from "@middlewares/errorHandler";
 
 const app = express();
 
 app.use(express.json());
-app.use(cors());
-app.use(helmet());
-app.use(morgan(process.env.TIPO_LOGS!));
-
 app.use(
     cors({
         //origin: ["http://example.com", "https://anotherdomain.com"],
@@ -24,10 +18,10 @@ app.use(
         //allowedHeaders: ["Content-Type", "Authorization"],
     })
 );
+app.use(helmet());
+app.use(morgan(process.env.TIPO_LOGS! || "dev"));
 
-const routesPath = path.join(__dirname, "routes");
-loadRoutes(app, routesPath);
-
-app.use(errorHandler);
+app.use("/api", router)
+app.use(errorHandler)
 
 export default app;

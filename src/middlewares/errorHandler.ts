@@ -1,20 +1,31 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from "express";
+import {
+    ValidationError,
+    NotFoundError,
+    UnauthorizedError,
+} from "@middlewares/appError";
 
-interface ErrorWithStatus extends Error {
-    statusCode?: number;
-}
+const errorHandler = (
+    error: any,
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    if (error instanceof ValidationError) {
+        return res.status(error.statusCode).send({
+            type: error.name,
+            details: error.message,
+        });
+    }
 
-const errorHandler = (err: ErrorWithStatus, req: Request, res: Response, next: NextFunction) => {
-    console.error(err.stack);
+    if (error instanceof NotFoundError || error instanceof UnauthorizedError) {
+        return res.status(error.statusCode).json({
+            error: error.name,
+            message: error.message,
+        });
+    }
 
-    const statusCode = err.statusCode || 500;
-    res.status(statusCode);
-
-    res.json({
-        status: "error",
-        statusCode: statusCode,
-        message: err.message || 'Internal Server Error',
-    });
+    return res.status(500).send({ status: 500, success: false, error: "Internal Server Error" });
 };
 
 export default errorHandler;
