@@ -4,28 +4,26 @@ import {
     NotFoundError,
     UnauthorizedError,
 } from "@middlewares/appError";
+import {resultHandler} from "@middlewares/resultHandler";
 
 const errorHandler = (
-    error: any,
+    error: Error,
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
     if (error instanceof ValidationError) {
-        return res.status(error.statusCode).send({
-            type: error.name,
-            details: error.message,
-        });
+        resultHandler({ status: error.statusCode, success: false, result: error.message }, res);
     }
 
     if (error instanceof NotFoundError || error instanceof UnauthorizedError) {
-        return res.status(error.statusCode).json({
-            error: error.name,
-            message: error.message,
-        });
+        resultHandler({ status: error.statusCode, success: false, result: error.message }, res);
     }
 
-    return res.status(500).send({ status: 500, success: false, error: "Internal Server Error" });
+    if (!res.headersSent) {
+        resultHandler({ status: 500, success: false, result: "Error interno del servidor" }, res);
+    }
+
 };
 
 export default errorHandler;
