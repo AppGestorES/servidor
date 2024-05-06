@@ -1,47 +1,21 @@
 import { Request, Response, NextFunction } from "express";
+import { query } from "@config/db";
 
 import tryCatch from "@utils/tryCatch";
-import { resultHandler } from "@middlewares/resultHandler";
+import { STATUS_OK, resultHandler } from "@middlewares/resultHandler";
 
-interface Hola{
-    nombre: string;
-}
+import { getMateriasPrimas } from "@services/materiasPrimas/materiasPrimasService";
 
 export class MateriasPrimas {
     async getMateriasPrimas(req: Request, res: Response, next: NextFunction) {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
+                const results = await query(getMateriasPrimas);
                 resultHandler(
-                    { status: 200, success: true, result: "OK" },
+                    { status: STATUS_OK, success: true, result: results },
                     res
                 );
             }
         )(req, res, next);
     }
-
-    esTipoHola(obj: any): obj is Hola {
-        return obj && typeof obj.mensaje === 'string';
-    }
-
-    validateBody(req: Request, res: Response, next: NextFunction, esTipo: Function) {
-        if(!req.body || esTipo(req.body)){
-            next();
-        } else {
-            resultHandler(
-                { status: 400, success: false, result: "Bad Request" },
-                res
-            );
-        }
-    }
-
-    // validateBody(req: Request, res: Response, next: NextFunction) {
-    //     if (!req.body || req.body typeof Hola) {
-    //         resultHandler(
-    //             { status: 400, success: false, result: "Bad Request" },
-    //             res
-    //         );
-    //     } else {
-    //         next();
-    //     }
-    // }
 }
