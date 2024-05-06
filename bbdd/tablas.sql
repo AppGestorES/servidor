@@ -13,7 +13,7 @@ CREATE TABLE proyecto (
 CREATE TABLE materias_primas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
-    caducidad BIGINT NOT NULL DEFAULT UNIX_TIMESTAMP(),
+    caducidad BIGINT NOT NULL,
     stock_kgs DECIMAL(10, 2),
     id_proyecto INT NOT NULL,
     CONSTRAINT fk_materias_primas_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
@@ -22,7 +22,7 @@ CREATE TABLE materias_primas (
 CREATE TABLE formulas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
-    caducidad BIGINT NOT NULL DEFAULT UNIX_TIMESTAMP(),
+    caducidad BIGINT NOT NULL,
     id_proyecto INT NOT NULL,
     CONSTRAINT fk_formulas_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
 );
@@ -31,7 +31,7 @@ CREATE TABLE productos_finales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     formula_id INT NOT NULL,
-    caducidad BIGINT NOT NULL DEFAULT UNIX_TIMESTAMP(),
+    caducidad BIGINT NOT NULL,
     id_proyecto INT NOT NULL,
     CONSTRAINT fk_productos_finales_formula FOREIGN KEY (formula_id) REFERENCES formulas(id),
     CONSTRAINT fk_productos_finales_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
@@ -88,6 +88,46 @@ CREATE TABLE vehiculos (
     matricula VARCHAR(20) NOT NULL,
     id_proyecto INT NOT NULL,
     CONSTRAINT fk_vehiculos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+);
+
+CREATE TABLE entrada_de_productos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    producto_final_id INT NOT NULL,
+    fecha_entrada BIGINT NOT NULL,
+    proveedor VARCHAR(255),
+    numero_albaran VARCHAR(100),
+    numero_lote VARCHAR(100),
+    cantidad_kg DECIMAL(10, 2),
+    fecha_caducidad BIGINT,
+    envasado_id INT,
+    operario_id INT,
+    id_proyecto INT NOT NULL,
+    CONSTRAINT fk_entrada_de_productos_producto_final FOREIGN KEY (producto_final_id) REFERENCES productos_finales(id),
+    CONSTRAINT fk_entrada_de_productos_operario FOREIGN KEY (operario_id) REFERENCES operarios(id),
+    CONSTRAINT fk_entrada_de_productos_envasado FOREIGN KEY (envasado_id) REFERENCES envasado(id),
+    CONSTRAINT fk_entrada_de_productos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+);
+
+CREATE TABLE salida_de_productos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    producto_final_id INT NOT NULL,
+    formula_id INT NOT NULL,
+    numero_lote VARCHAR(100),
+    fecha_salida BIGINT,
+    cantidad DECIMAL(10, 2),
+    fecha_caducidad BIGINT,
+    envasado_id INT,
+    formato_id INT,
+    destino_id INT,
+    vehiculo_id INT,
+    id_proyecto INT NOT NULL,
+    CONSTRAINT fk_salida_de_productos_producto_final FOREIGN KEY (producto_final_id) REFERENCES productos_finales(id),
+    CONSTRAINT fk_salida_de_productos_formula FOREIGN KEY (formula_id) REFERENCES formulas(id),
+    CONSTRAINT fk_salida_de_productos_envasado FOREIGN KEY (envasado_id) REFERENCES envasado(id),
+    CONSTRAINT fk_salida_de_productos_formato FOREIGN KEY (formato_id) REFERENCES formatos(id),
+    CONSTRAINT fk_salida_de_productos_destino FOREIGN KEY (destino_id) REFERENCES destinos(id),
+    CONSTRAINT fk_salida_de_productos_vehiculo FOREIGN KEY (vehiculo_id) REFERENCES vehiculos(id),
+    CONSTRAINT fk_salida_de_productos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
 );
 
 CREATE TABLE usuarios (
@@ -148,7 +188,7 @@ CREATE TABLE usuarios_permisos (
 
 CREATE TABLE logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    fecha BIGINT NOT NULL DEFAULT UNIX_TIMESTAMP(),
+    fecha BIGINT NOT NULL,
     tipo VARCHAR(50),
     mensaje VARCHAR(50),
     version VARCHAR(10)
