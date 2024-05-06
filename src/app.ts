@@ -5,7 +5,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 
-import router from "@routes/router";
+import router from "@routes/index";
 import errorHandler from "@middlewares/errorHandler";
 
 const app = express();
