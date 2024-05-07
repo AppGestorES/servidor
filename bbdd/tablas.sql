@@ -13,7 +13,7 @@ CREATE TABLE proyecto (
 CREATE TABLE materias_primas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
-    caducidad BIGINT NOT NULL,
+    caducidad INT(10) NOT NULL,
     stock_kgs DECIMAL(10, 2),
     id_proyecto INT NOT NULL,
     CONSTRAINT fk_materias_primas_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
@@ -22,7 +22,7 @@ CREATE TABLE materias_primas (
 CREATE TABLE formulas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
-    caducidad BIGINT NOT NULL,
+    caducidad INT(10) NOT NULL,
     id_proyecto INT NOT NULL,
     CONSTRAINT fk_formulas_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
 );
@@ -31,7 +31,7 @@ CREATE TABLE productos_finales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     formula_id INT NOT NULL,
-    caducidad BIGINT NOT NULL,
+    caducidad INT(10) NOT NULL,
     id_proyecto INT NOT NULL,
     CONSTRAINT fk_productos_finales_formula FOREIGN KEY (formula_id) REFERENCES formulas(id),
     CONSTRAINT fk_productos_finales_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
@@ -93,12 +93,12 @@ CREATE TABLE vehiculos (
 CREATE TABLE entrada_de_productos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     producto_final_id INT NOT NULL,
-    fecha_entrada BIGINT NOT NULL,
+    fecha_entrada INT(10) NOT NULL,
     proveedor VARCHAR(255),
     numero_albaran VARCHAR(100),
     numero_lote VARCHAR(100),
     cantidad_kg DECIMAL(10, 2),
-    fecha_caducidad BIGINT,
+    fecha_caducidad INT(10),
     envasado_id INT,
     operario_id INT,
     id_proyecto INT NOT NULL,
@@ -113,9 +113,9 @@ CREATE TABLE salida_de_productos (
     producto_final_id INT NOT NULL,
     formula_id INT NOT NULL,
     numero_lote VARCHAR(100),
-    fecha_salida BIGINT,
+    fecha_salida INT(10),
     cantidad DECIMAL(10, 2),
-    fecha_caducidad BIGINT,
+    fecha_caducidad INT(10),
     envasado_id INT,
     formato_id INT,
     destino_id INT,
@@ -188,10 +188,10 @@ CREATE TABLE usuarios_permisos (
 
 CREATE TABLE logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    fecha BIGINT NOT NULL,
+    fecha INT(10) NOT NULL,
     tipo VARCHAR(50),
     mensaje VARCHAR(50),
-    version VARCHAR(10)
+    version VARCHAR(10),
     usuario INT,
     CONSTRAINT fk_logs_usuario FOREIGN KEY (usuario) REFERENCES usuarios(id)
 );
