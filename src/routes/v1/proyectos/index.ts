@@ -7,6 +7,9 @@ const router = express.Router();
 //rutas
 router.get("/proyectos", new Proyectos().getProyectos);
 router.get("/proyectos/nombre/:nombre", new Proyectos().getProyectosByNombre);
+router.get("/proyectos/nif/:nif", new Proyectos().getProyectosByNIF);
+router.get("/proyectos/telefono/:telefono", new Proyectos().getProyectosByTelefono);
+router.get("/proyectos/correo/:correo", new Proyectos().getProyectosByCorreoElectronico);
 router.post("/proyectos", new Proyectos().postProyectos);
 router.put("/proyectos/:id", new Proyectos().putProyectos);
 router.delete("/proyectos/:id", new Proyectos().deleteProyectos);

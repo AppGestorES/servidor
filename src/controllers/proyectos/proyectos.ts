@@ -7,6 +7,9 @@ import { STATUS_OK, resultHandler } from "@middlewares/resultHandler";
 import {
     getProyectosService,
     getProyectosByNombreService,
+    getProyectosByNIFService,
+    getProyectosByTelefonoService,
+    getProyectosByCorreoElectronicoService,
     postProyectosService,
     putProyectosService,
     deleteProyectosService,
@@ -42,6 +45,69 @@ export class Proyectos {
                 const nombre = `%${req.params.nombre}%`;
                 const results = await conn.query(getProyectosByNombreService, [
                     nombre,
+                ]);
+                resultHandler(
+                    { status: STATUS_OK, success: true, result: results },
+                    res,
+                    conn
+                );
+            }
+        )(req, res, next);
+    }
+
+    async getProyectosByNIF(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        await tryCatch(
+            async (req: Request, res: Response, next: NextFunction) => {
+                const conn = await pool.getConnection();
+                const nif = `%${req.params.nif}%`;
+                const results = await conn.query(getProyectosByNIFService, [
+                    nif,
+                ]);
+                resultHandler(
+                    { status: STATUS_OK, success: true, result: results },
+                    res,
+                    conn
+                );
+            }
+        )(req, res, next);
+    }
+
+    async getProyectosByTelefono(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        await tryCatch(
+            async (req: Request, res: Response, next: NextFunction) => {
+                const conn = await pool.getConnection();
+                const telefono = `%${req.params.telefono}%`;
+                const results = await conn.query(getProyectosByTelefonoService, [
+                    telefono,
+                ]);
+                resultHandler(
+                    { status: STATUS_OK, success: true, result: results },
+                    res,
+                    conn
+                );
+            }
+        )(req, res, next);
+    }
+
+    async getProyectosByCorreoElectronico(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        await tryCatch(
+            async (req: Request, res: Response, next: NextFunction) => {
+                const conn = await pool.getConnection();
+                const correo = `%${req.params.correo}%`;
+                const results = await conn.query(getProyectosByCorreoElectronicoService, [
+                    correo,
                 ]);
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
