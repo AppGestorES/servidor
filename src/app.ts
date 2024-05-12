@@ -21,7 +21,7 @@ app.use(
 app.use(helmet());
 app.use(morgan(process.env.TIPO_LOGS! || "dev"));
 
-app.use("/api", router)
+app.use(router)
 app.use(errorHandler)
 
 export default app;
