@@ -7,7 +7,7 @@ import { STATUS_OK, resultHandler } from "@middlewares/resultHandler";
 import {
     getMateriasPrimasService,
     postMateriasPrimasService,
-} from "@services/materiasPrimas/materiasPrimasService";
+} from "@services/materiasPrimasService";
 import { postMateriasPrimasInterface } from "@interfaces/materiasPrimas.interface";
 
 export class MateriasPrimas {

@@ -1,6 +1,6 @@
 import express from "express";
 
-import { MateriasPrimas } from "@controllers/materiasPrimas/getMateriasPrimas";
+import { MateriasPrimas } from "@controllers/materiasPrimas/materiasPrimas";
 
 const router = express.Router();
 
