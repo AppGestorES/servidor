@@ -195,3 +195,11 @@ CREATE TABLE logs (
     usuario INT,
     CONSTRAINT fk_logs_usuario FOREIGN KEY (usuario) REFERENCES usuarios(id)
 );
+
+CREATE TABLE sesiones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(255) NOT NULL,
+    fecha INT(10) NOT NULL,
+    usuario INT,
+    CONSTRAINT fk_sesiones_usuario FOREIGN KEY (usuario) REFERENCES usuarios(id)
+);
