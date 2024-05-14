@@ -6,6 +6,7 @@ const STATUS_OK: number = 200;
 const STATUS_NOT_FOUND: number = 404;
 const STATUS_NO_TOKEN: number = 401;
 const STATUS_NO_ACCESS: number = 403;
+const STATUS_CONFLICT: number = 409;
 
 const resultHandler = (
     result: Result,
