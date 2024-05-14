@@ -137,6 +137,7 @@ CREATE TABLE usuarios (
     segundo_apellido VARCHAR(100) NOT NULL,
     foto VARCHAR(100) NOT NULL,
     contrasena VARCHAR(100) NOT NULL,
+    identificador VARCHAR(100) NOT NULL UNIQUE,
     id_proyecto INT NOT NULL,
     CONSTRAINT fk_usuarios_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
 );
