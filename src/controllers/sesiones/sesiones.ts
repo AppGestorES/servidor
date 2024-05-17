@@ -10,22 +10,18 @@ import { postSesionesInterface } from "@interfaces/sesiones.interface";
 import { postUsuariosInterface } from "@interfaces/usuarios.interface";
 
 export class Sesiones {
-    async postSesion(userId: number) {
-        await tryCatchDefault(
-            async () => {
-                const conn = await pool.getConnection();
-                const fecha: number = Math.floor(Date.now() / 1000);
-                const usuario = userId;
-                const token = jwt.sign({ usuario }, process.env.JWT_SECRET!, {
-                    expiresIn: "30d",
-                });
-                await conn.query(postSesionesService, [
-                    token,
-                    fecha,
-                    usuario,
-                ]);
-                return token;
-            }
-        )();
+    async postSesion(userId: number): Promise<string> {
+        const generateToken = async (): Promise<string> => {
+            const conn = await pool.getConnection();
+            const fecha: number = Math.floor(Date.now() / 1000);
+            const usuario = userId;
+            const token = jwt.sign({ usuario }, process.env.JWT_SECRET!, {
+                expiresIn: "30d",
+            });
+            await conn.query(postSesionesService, [token, fecha, usuario]);
+            await conn.release();
+            return token;
+        };
+        return await tryCatchDefault(generateToken)();
     }
 }

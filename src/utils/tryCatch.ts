@@ -12,15 +12,15 @@ const tryCatch =
     };
 
 const tryCatchDefault =
-    (controller: any) =>
-    async () => {
+    <T>(fn: (...args: any[]) => Promise<T>) =>
+    async (...args: any[]): Promise<T> => {
         try {
-            await controller();
-        } catch (error) {
-            console.log(error);
-            return (error);
+            return await fn(...args);
+        } catch (err) {
+            console.error(err);
+            throw err;
         }
     };
 
 export default tryCatch;
-export { tryCatchDefault }
+export { tryCatchDefault };

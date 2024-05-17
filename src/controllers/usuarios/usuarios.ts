@@ -154,10 +154,15 @@ export class Usuarios {
                 const userId = Number(results.insertId);
                 const token = await new Sesiones().postSesion(userId);
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: token },
+                    {
+                        status: STATUS_OK,
+                        success: true,
+                        result: token,
+                    },
                     res,
                     conn
                 );
+                await conn.release();
             }
         )(req, res, next);
     }
