@@ -20,7 +20,6 @@ export interface getUsuariosInterface {
 export interface postUsuariosInterface {
     nombre: string;
     apellido: string;
-    foto: string;
     contrasena: string;
     identificador: string;
     id_proyecto: number;

@@ -19,6 +19,7 @@ import {
     postUsuariosInterface,
     putUsuariosInterface,
 } from "@interfaces/usuarios.interface";
+import { Sesiones } from "@controllers/sesiones/sesiones";
 
 export class Usuarios {
     async getUsuarios(req: Request, res: Response, next: NextFunction) {
@@ -139,7 +140,6 @@ export class Usuarios {
                 const {
                     nombre,
                     apellido,
-                    foto,
                     contrasena,
                     identificador,
                     id_proyecto,
@@ -147,11 +147,13 @@ export class Usuarios {
                 const results = await conn.query(postUsuariosService, [
                     nombre,
                     apellido,
-                    foto,
                     contrasena,
                     identificador,
                     id_proyecto,
                 ]);
+                const userId = Number(results.insertId);
+                const token = await new Sesiones().postSesion(userId);
+                console.log(token)
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
                     res,
