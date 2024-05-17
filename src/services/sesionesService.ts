@@ -1,3 +1,3 @@
-const postSesionesService: string = "INSERT INTO usuarios (nombre, apellido, contrasena, identificador, id_proyecto) VALUES (?, ?, ?, ?, ?)";
+const postSesionesService: string = "INSERT INTO sesiones (fecha, usuario) VALUES (?, ?)";
 
 export { postSesionesService };

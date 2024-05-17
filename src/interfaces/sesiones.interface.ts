@@ -13,7 +13,6 @@ export interface getSesionesInterface {
 }
 
 export interface postSesionesInterface {
-    token: string;
     fecha: number;
     usuario: number;
 }
