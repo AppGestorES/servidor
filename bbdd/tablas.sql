@@ -134,9 +134,9 @@ CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
-    segundo_apellido VARCHAR(100) NOT NULL,
-    foto VARCHAR(100) NOT NULL,
+    foto VARCHAR(100),
     contrasena VARCHAR(100) NOT NULL,
+    identificador VARCHAR(100) NOT NULL UNIQUE,
     id_proyecto INT NOT NULL,
     CONSTRAINT fk_usuarios_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
 );
@@ -194,4 +194,12 @@ CREATE TABLE logs (
     version VARCHAR(10),
     usuario INT,
     CONSTRAINT fk_logs_usuario FOREIGN KEY (usuario) REFERENCES usuarios(id)
+);
+
+CREATE TABLE sesiones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(255) NOT NULL,
+    fecha INT(10) NOT NULL,
+    usuario INT,
+    CONSTRAINT fk_sesiones_usuario FOREIGN KEY (usuario) REFERENCES usuarios(id)
 );
