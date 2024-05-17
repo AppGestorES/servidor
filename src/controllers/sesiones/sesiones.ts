@@ -19,7 +19,6 @@ export class Sesiones {
                 const token = jwt.sign({ usuario }, process.env.JWT_SECRET!, {
                     expiresIn: "30d",
                 });
-                console.log(token)
                 await conn.query(postSesionesService, [
                     token,
                     fecha,

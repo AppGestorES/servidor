@@ -153,7 +153,6 @@ export class Usuarios {
                 ]);
                 const userId = Number(results.insertId);
                 const token = await new Sesiones().postSesion(userId);
-                console.log(token)
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
                     res,
