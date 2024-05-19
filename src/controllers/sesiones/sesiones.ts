@@ -3,13 +3,71 @@ import pool from "@config/db";
 import jwt from "jsonwebtoken";
 
 import tryCatch, { tryCatchDefault } from "@utils/tryCatch";
-import { STATUS_OK, resultHandler } from "@middlewares/resultHandler";
+import { STATUS_NOT_FOUND, STATUS_OK, resultHandler } from "@middlewares/resultHandler";
 
-import { postSesionesService } from "@services/sesionesService";
-import { postSesionesInterface } from "@interfaces/sesiones.interface";
+import {
+    postSesionesService,
+    iniciarSesionService,
+} from "@services/sesionesService";
+import {
+    postSesionesInterface,
+    iniciarSesionInterface,
+} from "@interfaces/sesiones.interface";
 import { postUsuariosInterface } from "@interfaces/usuarios.interface";
 
 export class Sesiones {
+    async iniciarSesion(req: Request, res: Response, next: NextFunction) {
+        await tryCatch(
+            async (req: Request, res: Response, next: NextFunction) => {
+                const conn = await pool.getConnection();
+                const { usuario, contrasena } =
+                    req.body as iniciarSesionInterface;
+                const results = await conn.query(iniciarSesionService, [
+                    usuario,
+                    contrasena,
+                ]);
+
+                if (results.length === 0) {
+                    return resultHandler(
+                        {
+                            status: STATUS_NOT_FOUND,
+                            success: false,
+                            result: "Credenciales erróneas.",
+                        },
+                        res,
+                        conn
+                    );
+                }
+
+                if (results[0].contrasena == contrasena) {
+                    const userId = Number(results[0].id);
+                    const token = await new Sesiones().postSesion(userId);
+                    resultHandler(
+                        {
+                            status: STATUS_OK,
+                            success: true,
+                            result: token,
+                        },
+                        res,
+                        conn
+                    );
+                } else {
+                    resultHandler(
+                        {
+                            status: STATUS_NOT_FOUND,
+                            success: false,
+                            result: "Credenciales erróneas.",
+                        },
+                        res,
+                        conn
+                    );
+                }
+
+                await conn.release();
+            }
+        )(req, res, next);
+    }
+
     async postSesion(userId: number): Promise<string> {
         const generateToken = async (): Promise<string> => {
             const conn = await pool.getConnection();

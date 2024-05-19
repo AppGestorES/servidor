@@ -24,3 +24,8 @@ export interface putSesionesInterface {
     fecha: number;
     usuario: number;
 }
+
+export interface iniciarSesionInterface {
+    usuario: string;
+    contrasena: string;
+}
