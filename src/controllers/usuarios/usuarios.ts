@@ -151,13 +151,11 @@ export class Usuarios {
                     identificador,
                     id_proyecto,
                 ]);
-                const userId = Number(results.insertId);
-                const token = await new Sesiones().postSesion(userId);
                 resultHandler(
                     {
                         status: STATUS_OK,
                         success: true,
-                        result: token,
+                        result: "Usuario creado",
                     },
                     res,
                     conn

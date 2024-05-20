@@ -29,3 +29,10 @@ export interface iniciarSesionInterface {
     usuario: string;
     contrasena: string;
 }
+
+export interface registrarSesionInterface {
+    nombre: string;
+    apellido: string;
+    contrasena: string;
+    identificador: string;
+}
