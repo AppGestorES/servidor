@@ -3,6 +3,7 @@ import {
     ValidationError,
     NotFoundError,
     UnauthorizedError,
+    DuplicateEntryError
 } from "@middlewares/appError";
 import {resultHandler} from "@middlewares/resultHandler";
 
@@ -13,6 +14,10 @@ const errorHandler = (
     next: NextFunction
 ) => {
     if (error instanceof ValidationError) {
+        resultHandler({ status: error.statusCode, success: false, result: error.message }, res);
+    }
+
+    if (error instanceof DuplicateEntryError) {
         resultHandler({ status: error.statusCode, success: false, result: error.message }, res);
     }
 

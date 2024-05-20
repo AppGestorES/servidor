@@ -25,4 +25,13 @@ class UnauthorizedError extends Error {
     }
 }
 
-export { ValidationError, NotFoundError, UnauthorizedError };
+class DuplicateEntryError extends Error {
+    statusCode: number;
+    constructor(message: string) {
+        super(message);
+        this.name = "DuplicateEntryError";
+        this.statusCode = 409;
+    }
+}
+
+export { ValidationError, NotFoundError, UnauthorizedError, DuplicateEntryError };
