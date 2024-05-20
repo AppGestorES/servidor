@@ -1,14 +1,11 @@
-import mysql from "mysql";
+import mariadb from 'mariadb';
 import util from "util";
 
-const pool = mysql.createPool({
+const pool = mariadb.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER_PROD,
     password: process.env.CONTRASENASQL,
-    database: process.env.DATABASESQL,
+    database: process.env.DATABASESQL
 });
 
-// Promisify para usar async/await con las consultas de MySQL
-const query = util.promisify(pool.query).bind(pool);
-
-export { query };
+export default pool;

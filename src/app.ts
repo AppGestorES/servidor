@@ -5,7 +5,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 
-import router from "@routes/router";
+import router from "@routes/index";
 import errorHandler from "@middlewares/errorHandler";
 
 const app = express();
@@ -21,7 +21,7 @@ app.use(
 app.use(helmet());
 app.use(morgan(process.env.TIPO_LOGS! || "dev"));
 
-app.use("/api", router)
+app.use(router)
 app.use(errorHandler)
 
 export default app;
