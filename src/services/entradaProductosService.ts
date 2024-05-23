@@ -1,0 +1,10 @@
+const getEntradasService: string = "SELECT id, producto_final_id, fecha_entrada, proveedor, numero_albaran, numero_lote, cantidad_kg, fecha_caducidad, envasado_id, operario_id, id_proyecto FROM entrada_de_productos";
+const getEntradasByProductoFinalService: string = "SELECT id, producto_final_id, fecha_entrada, proveedor, numero_albaran, numero_lote, cantidad_kg, fecha_caducidad, envasado_id, operario_id, id_proyecto FROM entrada_de_productos WHERE producto_final_id = ?";
+const getEntradasByFechaEntradaService: string = "SELECT id, producto_final_id, fecha_entrada, proveedor, numero_albaran, numero_lote, cantidad_kg, fecha_caducidad, envasado_id, operario_id, id_proyecto FROM entrada_de_productos WHERE fecha_entrada = ?";
+const getEntradasByProveedorService: string = "SELECT id, producto_final_id, fecha_entrada, proveedor, numero_albaran, numero_lote, cantidad_kg, fecha_caducidad, envasado_id, operario_id, id_proyecto FROM entrada_de_productos WHERE proveedor LIKE ?";
+const getEntradasByNumeroAlbaranService: string = "SELECT id, producto_final_id, fecha_entrada, proveedor, numero_albaran, numero_lote, cantidad_kg, fecha_caducidad, envasado_id, operario_id, id_proyecto FROM entrada_de_productos WHERE numero_albaran LIKE ?";
+const postEntradasService: string = "INSERT INTO entrada_de_productos (producto_final_id, fecha_entrada, proveedor, numero_albaran, numero_lote, cantidad_kg, fecha_caducidad, envasado_id, operario_id, id_proyecto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+const putEntradasService: string = "UPDATE entrada_de_productos SET producto_final_id = ?, fecha_entrada = ?, proveedor = ?, numero_albaran = ?, numero_lote = ?, cantidad_kg = ?, fecha_caducidad = ?, envasado_id = ?, operario_id = ?, id_proyecto = ? WHERE id = ?";
+const deleteEntradasService: string = "DELETE FROM entrada_de_productos WHERE id = ?";
+
+export { getEntradasService, getEntradasByProductoFinalService, getEntradasByFechaEntradaService, getEntradasByProveedorService, getEntradasByNumeroAlbaranService, postEntradasService, putEntradasService, deleteEntradasService };
