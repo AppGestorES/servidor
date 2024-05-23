@@ -5,6 +5,7 @@ import proyectos from "@routes/v1/proyectos";
 import pages from "@routes/v1/pages";
 import usuarios from "@routes/v1/usuarios";
 import sesiones from "@routes/v1/sesiones";
+import envasados from "@routes/v1/envasados"
 
 const router = Router();
 
@@ -12,6 +13,7 @@ router.use(materiasPrimas);
 router.use(proyectos);
 router.use(usuarios);
 router.use(sesiones);
+router.use(envasados);
 router.use(pages);
 
 export default router;
