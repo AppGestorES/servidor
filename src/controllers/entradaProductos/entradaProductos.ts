@@ -19,7 +19,7 @@ import {
     putEntradasInterface,
 } from "@interfaces/entradaProductos.interface";
 
-export class Entradas {
+export class EntradaProductos {
     async getEntradas(req: Request, res: Response, next: NextFunction) {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
