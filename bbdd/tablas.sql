@@ -104,7 +104,7 @@ CREATE TABLE entrada_de_productos (
     id_proyecto INT NOT NULL,
     CONSTRAINT fk_entrada_de_productos_producto_final FOREIGN KEY (producto_final_id) REFERENCES productos_finales(id),
     CONSTRAINT fk_entrada_de_productos_operario FOREIGN KEY (operario_id) REFERENCES operarios(id),
-    CONSTRAINT fk_entrada_de_productos_envasado FOREIGN KEY (envasado_id) REFERENCES envasado(id),
+    CONSTRAINT fk_entrada_de_productos_envasado FOREIGN KEY (envasado_id) REFERENCES envasados(id),
     CONSTRAINT fk_entrada_de_productos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
