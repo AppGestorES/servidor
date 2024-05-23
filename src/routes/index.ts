@@ -6,6 +6,8 @@ import pages from "@routes/v1/pages";
 import usuarios from "@routes/v1/usuarios";
 import sesiones from "@routes/v1/sesiones";
 import proveedores from "@routes/v1/proveedores";
+import formulas from "@routes/v1/formulas"
+import vehiculos from "@routes/v1/vehiculos"
 
 const router = Router();
 
@@ -14,6 +16,8 @@ router.use(proyectos);
 router.use(usuarios);
 router.use(sesiones);
 router.use(proveedores);
+router.use(formulas);
+router.use(vehiculos);
 router.use(pages);
 
 export default router;
