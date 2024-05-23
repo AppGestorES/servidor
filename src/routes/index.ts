@@ -5,6 +5,8 @@ import proyectos from "@routes/v1/proyectos";
 import pages from "@routes/v1/pages";
 import usuarios from "@routes/v1/usuarios";
 import sesiones from "@routes/v1/sesiones";
+import entradaProductos from '@routes/v1/entradaProductos';
+import logs from "@routes/v1/logs";
 import destinos from "@routes/v1/destinos";
 import formatos from "@routes/v1/formatos"
 import proveedores from "@routes/v1/proveedores";
@@ -17,6 +19,8 @@ router.use(materiasPrimas);
 router.use(proyectos);
 router.use(usuarios);
 router.use(sesiones);
+router.use(entradaProductos)
+router.use(logs);
 router.use(destinos);
 router.use(formatos);
 router.use(proveedores);
