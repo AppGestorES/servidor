@@ -5,24 +5,24 @@ import tryCatch from "@utils/tryCatch";
 import { STATUS_OK, resultHandler } from "@middlewares/resultHandler";
 
 import {
-    getMateriasPrimasService,
-    getMateriasPrimasByNombreService,
-    getMateriasPrimasByProyectoService,
-    postMateriasPrimasService,
-    putMateriasPrimasService,
-    deleteMateriasPrimasService,
-} from "@services/materiasPrimasService";
+    getLogsService,
+    getLogsByTipoService,
+    getLogsByUsuarioService,
+    postLogsService,
+    putLogsService,
+    deleteLogsService,
+} from "@services/logsService";
 import {
-    postMateriasPrimasInterface,
-    putMateriasPrimasInterface,
-} from "@interfaces/materiasPrimas.interface";
+    postLogsInterface,
+    putLogsInterface,
+} from "@interfaces/logs.interface";
 
-export class MateriasPrimas {
-    async getMateriasPrimas(req: Request, res: Response, next: NextFunction) {
+export class Logs {
+    async getLogs(req: Request, res: Response, next: NextFunction) {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const results = await conn.query(getMateriasPrimasService);
+                const results = await conn.query(getLogsService);
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
                     res,
@@ -32,7 +32,7 @@ export class MateriasPrimas {
         )(req, res, next);
     }
 
-    async getMateriasPrimasByNombre(
+    async getLogsByTipo(
         req: Request,
         res: Response,
         next: NextFunction
@@ -40,9 +40,9 @@ export class MateriasPrimas {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const nombre = `%${req.params.nombre}%`;
-                const results = await conn.query(getMateriasPrimasByNombreService, [
-                    nombre,
+                const tipo = `%${req.params.tipo}%`;
+                const results = await conn.query(getLogsByTipoService, [
+                    tipo,
                 ]);
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
@@ -53,7 +53,7 @@ export class MateriasPrimas {
         )(req, res, next);
     }
 
-    async getMateriasPrimasByProyecto(
+    async getLogsByUsuario(
         req: Request,
         res: Response,
         next: NextFunction
@@ -61,9 +61,9 @@ export class MateriasPrimas {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const id_proyecto = req.params.id_proyecto;
-                const results = await conn.query(getMateriasPrimasByProyectoService, [
-                    id_proyecto,
+                const usuario = req.params.usuario;
+                const results = await conn.query(getLogsByUsuarioService, [
+                    usuario,
                 ]);
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
@@ -74,21 +74,23 @@ export class MateriasPrimas {
         )(req, res, next);
     }
 
-    async postMateriasPrimas(req: Request, res: Response, next: NextFunction) {
+    async postLogs(req: Request, res: Response, next: NextFunction) {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const {
-                    nombre,
-                    caducidad,
-                    stock_kgs,
-                    id_proyecto,
-                } = req.body as postMateriasPrimasInterface;
-                const results = await conn.query(postMateriasPrimasService, [
-                    nombre,
-                    caducidad,
-                    stock_kgs,
-                    id_proyecto,
+                    fecha,
+                    tipo,
+                    mensaje,
+                    version,
+                    usuario,
+                } = req.body as postLogsInterface;
+                const results = await conn.query(postLogsService, [
+                    fecha,
+                    tipo,
+                    mensaje,
+                    version,
+                    usuario,
                 ]);
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
@@ -99,22 +101,24 @@ export class MateriasPrimas {
         )(req, res, next);
     }
 
-    async putMateriasPrimas(req: Request, res: Response, next: NextFunction) {
+    async putLogs(req: Request, res: Response, next: NextFunction) {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const {
-                    nombre,
-                    caducidad,
-                    stock_kgs,
-                    id_proyecto,
-                } = req.body as putMateriasPrimasInterface;
+                    fecha,
+                    tipo,
+                    mensaje,
+                    version,
+                    usuario,
+                } = req.body as putLogsInterface;
                 const { id } = req.params;
-                const results = await conn.query(putMateriasPrimasService, [
-                    nombre,
-                    caducidad,
-                    stock_kgs,
-                    id_proyecto,
+                const results = await conn.query(putLogsService, [
+                    fecha,
+                    tipo,
+                    mensaje,
+                    version,
+                    usuario,
                     id,
                 ]);
                 resultHandler(
@@ -126,12 +130,12 @@ export class MateriasPrimas {
         )(req, res, next);
     }
 
-    async deleteMateriasPrimas(req: Request, res: Response, next: NextFunction) {
+    async deleteLogs(req: Request, res: Response, next: NextFunction) {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const { id } = req.params;
-                const results = await conn.query(deleteMateriasPrimasService, [id]);
+                const results = await conn.query(deleteLogsService, [id]);
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
                     res,
