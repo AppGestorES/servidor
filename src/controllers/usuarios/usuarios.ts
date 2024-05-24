@@ -15,6 +15,7 @@ import {
     putUsuariosService,
     deleteUsuariosService,
 } from "@services/usuariosService";
+import { getUserWithPermissionsService } from "@services/permisosService";
 import {
     postUsuariosInterface,
     putUsuariosInterface,
@@ -204,6 +205,82 @@ export class Usuarios {
                 const results = await conn.query(deleteUsuariosService, [id]);
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
+                    res,
+                    conn
+                );
+            }
+        )(req, res, next);
+    }
+
+    async getUserWithPermissions(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        await tryCatch(
+            async (req: Request, res: Response, next: NextFunction) => {
+                const conn = await pool.getConnection();
+                const { id } = req.params;
+                const results = await conn.query(
+                    getUserWithPermissionsService,
+                    [id]
+                );
+
+                if (!results.length) {
+                    resultHandler(
+                        {
+                            status: STATUS_OK,
+                            success: false,
+                            result: "Usuario no encontrado",
+                        },
+                        res,
+                        conn
+                    );
+                    return;
+                }
+
+                const user = results[0];
+
+                const groups = results.reduce((acc: any[], curr: any) => {
+                    if (
+                        curr.grupo_id &&
+                        !acc.some((g) => g.id === curr.grupo_id)
+                    ) {
+                        acc.push({
+                            id: curr.grupo_id,
+                            nombre: curr.grupo_nombre,
+                        });
+                    }
+                    return acc;
+                }, []);
+
+                const permissions = results.reduce((acc: any[], curr: any) => {
+                    if (
+                        curr.permiso_id &&
+                        !acc.some((p) => p.id === curr.permiso_id)
+                    ) {
+                        acc.push({
+                            id: curr.permiso_id,
+                            nombre: curr.permiso_nombre,
+                            descripcion: curr.permiso_descripcion,
+                        });
+                    }
+                    return acc;
+                }, []);
+
+                const result = {
+                    id: user.id,
+                    nombre: user.nombre,
+                    apellido: user.apellido,
+                    foto: user.foto,
+                    identificador: user.identificador,
+                    id_proyecto: user.id_proyecto,
+                    grupos: groups,
+                    permisos: permissions,
+                };
+
+                resultHandler(
+                    { status: STATUS_OK, success: true, result },
                     res,
                     conn
                 );
