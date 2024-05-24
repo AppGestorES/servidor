@@ -41,7 +41,8 @@
             "description": "API for managing proveedores"
         },
         { "name": "Formulas", "description": "API for managing formulas" },
-        { "name": "Vehiculos", "description": "API for managing vehiculos" }
+        { "name": "Vehiculos", "description": "API for managing vehiculos" },
+        { "name": "Permisos", "description": "API for managing permisos and grupos" }
     ],
     "paths": {
         "/materias_primas": {
@@ -320,6 +321,18 @@
                         "required": true,
                         "type": "integer"
                     }
+                ],
+                "responses": {
+                    "200": { "description": "Successful operation" }
+                }
+            }
+        },
+        "/usuarios/{id}/permissions": {
+            "get": {
+                "tags": ["Usuarios"],
+                "summary": "Get user with permissions",
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "type": "integer" }
                 ],
                 "responses": {
                     "200": { "description": "Successful operation" }
@@ -1356,6 +1369,162 @@
                     "200": { "description": "Successful operation" }
                 }
             }
+        },
+        "/permisos": {
+            "get": {
+                "tags": ["Permisos"],
+                "summary": "Get all permisos",
+                "responses": {
+                    "200": { "description": "Successful operation" }
+                }
+            },
+            "post": {
+                "tags": ["Permisos"],
+                "summary": "Create a new permiso",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": { "$ref": "#/definitions/PostPermisos" }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Successful operation" }
+                }
+            }
+        },
+        "/permisos/{id}": {
+            "put": {
+                "tags": ["Permisos"],
+                "summary": "Update a permiso",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": { "$ref": "#/definitions/PutPermisos" }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Successful operation" }
+                }
+            },
+            "delete": {
+                "tags": ["Permisos"],
+                "summary": "Delete a permiso",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Successful operation" }
+                }
+            }
+        },
+        "/grupos": {
+            "get": {
+                "tags": ["Permisos"],
+                "summary": "Get all grupos",
+                "responses": {
+                    "200": { "description": "Successful operation" }
+                }
+            },
+            "post": {
+                "tags": ["Permisos"],
+                "summary": "Create a new grupo",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": { "$ref": "#/definitions/PostGrupos" }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Successful operation" }
+                }
+            }
+        },
+        "/grupos/{id}": {
+            "put": {
+                "tags": ["Permisos"],
+                "summary": "Update a grupo",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": { "$ref": "#/definitions/PutGrupos" }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Successful operation" }
+                }
+            },
+            "delete": {
+                "tags": ["Permisos"],
+                "summary": "Delete a grupo",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "Successful operation" }
+                }
+            }
+        },
+        "/grupos/{id}/permisos": {
+            "get": {
+                "tags": ["Permisos"],
+                "summary": "Get all permisos for a grupo",
+                "parameters": [
+                    { "name": "id", "in": "path", "required": true, "type": "integer" }
+                ],
+                "responses": {
+                    "200": { "description": "Successful operation" }
+                }
+            }
+        },
+        "/grupos/{grupo_id}/permisos/{permiso_id}": {
+            "post": {
+                "tags": ["Permisos"],
+                "summary": "Assign a permiso to a grupo",
+                "parameters": [
+                    { "name": "grupo_id", "in": "path", "required": true, "type": "integer" },
+                    { "name": "permiso_id", "in": "path", "required": true, "type": "integer" }
+                ],
+                "responses": {
+                    "200": { "description": "Successful operation" }
+                }
+            },
+            "delete": {
+                "tags": ["Permisos"],
+                "summary": "Remove a permiso from a grupo",
+                "parameters": [
+                    { "name": "grupo_id", "in": "path", "required": true, "type": "integer" },
+                    { "name": "permiso_id", "in": "path", "required": true, "type": "integer" }
+                ],
+                "responses": {
+                    "200": { "description": "Successful operation" }
+                }
+            }
         }
     },
     "definitions": {
@@ -1643,6 +1812,36 @@
             "type": "object",
             "properties": {
                 "matricula": { "type": "string" },
+                "id_proyecto": { "type": "integer" }
+            }
+        },
+        "PostPermisos": {
+            "type": "object",
+            "properties": {
+                "nombre": { "type": "string" },
+                "descripcion": { "type": "string" },
+                "id_proyecto": { "type": "integer" }
+            }
+        },
+        "PutPermisos": {
+            "type": "object",
+            "properties": {
+                "nombre": { "type": "string" },
+                "descripcion": { "type": "string" },
+                "id_proyecto": { "type": "integer" }
+            }
+        },
+        "PostGrupos": {
+            "type": "object",
+            "properties": {
+                "nombre": { "type": "string" },
+                "id_proyecto": { "type": "integer" }
+            }
+        },
+        "PutGrupos": {
+            "type": "object",
+            "properties": {
+                "nombre": { "type": "string" },
                 "id_proyecto": { "type": "integer" }
             }
         }
