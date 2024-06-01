@@ -34,4 +34,22 @@ class DuplicateEntryError extends Error {
     }
 }
 
-export { ValidationError, NotFoundError, UnauthorizedError, DuplicateEntryError };
+class PrimaryKeyEntryError extends Error {
+    statusCode: number;
+    constructor(message: string) {
+        super(message);
+        this.name = "PrimaryKeyEntryError";
+        this.statusCode = 409;
+    }
+}
+
+class ForeignKeyEntryError extends Error {
+    statusCode: number;
+    constructor(message: string) {
+        super(message);
+        this.name = "ForeignKeyEntryError";
+        this.statusCode = 422;
+    }
+}
+
+export { ValidationError, NotFoundError, UnauthorizedError, DuplicateEntryError, PrimaryKeyEntryError, ForeignKeyEntryError };

@@ -1,4 +1,4 @@
-import { DuplicateEntryError } from "@middlewares/appError";
+import { DuplicateEntryError, PrimaryKeyEntryError, ForeignKeyEntryError } from "@middlewares/appError";
 import { Request, Response, NextFunction } from "express";
 
 const tryCatch =
@@ -7,8 +7,13 @@ const tryCatch =
         try {
             await controller(req, res, next);
         } catch (error: any) {
-            if (error.code === 'ER_DUP_ENTRY') {
-                return next(new DuplicateEntryError("El usuario ya existe."));
+            switch(error.code){
+                case "ER_DUP_ENTRY":
+                    return next(new DuplicateEntryError("El usuario ya existe."));
+                case "ER_ROW_IS_REFERENCED_2":
+                    return next(new PrimaryKeyEntryError("La clave principal está siendo usada."));
+                case "ER_NO_REFERENCED_ROW_2":
+                    return next(new ForeignKeyEntryError("La clave foránea no existe."));
             }
             console.log(error);
             return next(error);
