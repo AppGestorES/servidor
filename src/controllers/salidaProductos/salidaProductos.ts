@@ -16,6 +16,7 @@ import {
 import {
     postSalidaProductosInterface,
     putSalidaProductosInterface,
+    getSalidaProductosInterface,
 } from "@interfaces/salidaProductos.interface";
 
 export class SalidaProductos {
@@ -24,8 +25,46 @@ export class SalidaProductos {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const results = await conn.query(getSalidasService);
+                const salidas: getSalidaProductosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        producto_final_id: row.producto_final_id,
+                        formula_id: row.formula_id,
+                        numero_lote: row.numero_lote,
+                        fecha_salida: row.fecha_salida,
+                        cantidad: row.cantidad,
+                        fecha_caducidad: row.fecha_caducidad,
+                        envasado_id: {
+                            id: row.envasado_id,
+                            nombre: row.envasado_nombre,
+                        },
+                        formato_id: {
+                            id: row.formato_id,
+                            nombre: row.formato_nombre,
+                        },
+                        destino_id: {
+                            id: row.destino_id,
+                            nombre: row.destino_nombre,
+                        },
+                        vehiculo_id: {
+                            id: row.vehiculo_id,
+                            matricula: row.vehiculo_matricula,
+                        },
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: salidas },
                     res,
                     conn
                 );
@@ -42,11 +81,50 @@ export class SalidaProductos {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const producto_final_id = req.params.producto_final_id;
-                const results = await conn.query(getSalidasByProductoFinalService, [
-                    producto_final_id,
-                ]);
+                const results = await conn.query(
+                    getSalidasByProductoFinalService,
+                    [producto_final_id]
+                );
+                const salidas: getSalidaProductosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        producto_final_id: row.producto_final_id,
+                        formula_id: row.formula_id,
+                        numero_lote: row.numero_lote,
+                        fecha_salida: row.fecha_salida,
+                        cantidad: row.cantidad,
+                        fecha_caducidad: row.fecha_caducidad,
+                        envasado_id: {
+                            id: row.envasado_id,
+                            nombre: row.envasado_nombre,
+                        },
+                        formato_id: {
+                            id: row.formato_id,
+                            nombre: row.formato_nombre,
+                        },
+                        destino_id: {
+                            id: row.destino_id,
+                            nombre: row.destino_nombre,
+                        },
+                        vehiculo_id: {
+                            id: row.vehiculo_id,
+                            matricula: row.vehiculo_matricula,
+                        },
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: salidas },
                     res,
                     conn
                 );
@@ -63,11 +141,50 @@ export class SalidaProductos {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const fecha_salida = req.params.fecha_salida;
-                const results = await conn.query(getSalidasByFechaSalidaService, [
-                    fecha_salida,
-                ]);
+                const results = await conn.query(
+                    getSalidasByFechaSalidaService,
+                    [fecha_salida]
+                );
+                const salidas: getSalidaProductosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        producto_final_id: row.producto_final_id,
+                        formula_id: row.formula_id,
+                        numero_lote: row.numero_lote,
+                        fecha_salida: row.fecha_salida,
+                        cantidad: row.cantidad,
+                        fecha_caducidad: row.fecha_caducidad,
+                        envasado_id: {
+                            id: row.envasado_id,
+                            nombre: row.envasado_nombre,
+                        },
+                        formato_id: {
+                            id: row.formato_id,
+                            nombre: row.formato_nombre,
+                        },
+                        destino_id: {
+                            id: row.destino_id,
+                            nombre: row.destino_nombre,
+                        },
+                        vehiculo_id: {
+                            id: row.vehiculo_id,
+                            matricula: row.vehiculo_matricula,
+                        },
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: salidas },
                     res,
                     conn
                 );
@@ -87,8 +204,46 @@ export class SalidaProductos {
                 const results = await conn.query(getSalidasByProyectoService, [
                     id_proyecto,
                 ]);
+                const salidas: getSalidaProductosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        producto_final_id: row.producto_final_id,
+                        formula_id: row.formula_id,
+                        numero_lote: row.numero_lote,
+                        fecha_salida: row.fecha_salida,
+                        cantidad: row.cantidad,
+                        fecha_caducidad: row.fecha_caducidad,
+                        envasado_id: {
+                            id: row.envasado_id,
+                            nombre: row.envasado_nombre,
+                        },
+                        formato_id: {
+                            id: row.formato_id,
+                            nombre: row.formato_nombre,
+                        },
+                        destino_id: {
+                            id: row.destino_id,
+                            nombre: row.destino_nombre,
+                        },
+                        vehiculo_id: {
+                            id: row.vehiculo_id,
+                            matricula: row.vehiculo_matricula,
+                        },
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: salidas },
                     res,
                     conn
                 );
