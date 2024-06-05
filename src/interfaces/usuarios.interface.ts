@@ -1,3 +1,5 @@
+import { proyectosInterface } from "./proyectos.interface";
+
 export interface usuariosInterface {
     id: number;
     nombre: string;
@@ -5,7 +7,6 @@ export interface usuariosInterface {
     foto: string;
     contrasena: string;
     identificador: string;
-    id_proyecto: number;
 }
 
 export interface getUsuariosInterface {
@@ -14,7 +15,7 @@ export interface getUsuariosInterface {
     apellido: string;
     foto: string;
     identificador: string;
-    id_proyecto: number;
+    proyecto: proyectosInterface;
 }
 
 export interface postUsuariosInterface {

@@ -15,9 +15,11 @@ import {
     putUsuariosService,
     deleteUsuariosService,
 } from "@services/usuariosService";
+import { getUserWithPermissionsService } from "@services/permisosService";
 import {
     postUsuariosInterface,
     putUsuariosInterface,
+    getUsuariosInterface,
 } from "@interfaces/usuarios.interface";
 import { Sesiones } from "@controllers/sesiones/sesiones";
 
@@ -27,8 +29,28 @@ export class Usuarios {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const results = await conn.query(getUsuariosService);
+                const usuarios: getUsuariosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        apellido: row.apellido,
+                        foto: row.foto,
+                        identificador: row.identificador,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: usuarios },
                     res,
                     conn
                 );
@@ -44,8 +66,28 @@ export class Usuarios {
                 const results = await conn.query(getUsuariosByNombreService, [
                     nombre,
                 ]);
+                const usuarios: getUsuariosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        apellido: row.apellido,
+                        foto: row.foto,
+                        identificador: row.identificador,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: usuarios },
                     res,
                     conn
                 );
@@ -60,8 +102,28 @@ export class Usuarios {
                 const results = await conn.query(getUsuarioByIdService, [
                     req.params.id,
                 ]);
+                const usuarios: getUsuariosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        apellido: row.apellido,
+                        foto: row.foto,
+                        identificador: row.identificador,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: usuarios },
                     res,
                     conn
                 );
@@ -81,8 +143,28 @@ export class Usuarios {
                 const results = await conn.query(getUsuariosByApellidoService, [
                     apellido,
                 ]);
+                const usuarios: getUsuariosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        apellido: row.apellido,
+                        foto: row.foto,
+                        identificador: row.identificador,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: usuarios },
                     res,
                     conn
                 );
@@ -103,8 +185,28 @@ export class Usuarios {
                     getUsuariosByIdentificadorService,
                     [identificador]
                 );
+                const usuarios: getUsuariosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        apellido: row.apellido,
+                        foto: row.foto,
+                        identificador: row.identificador,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: usuarios },
                     res,
                     conn
                 );
@@ -124,8 +226,28 @@ export class Usuarios {
                 const results = await conn.query(getUsuariosByProyectoService, [
                     proyecto,
                 ]);
+                const usuarios: getUsuariosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        apellido: row.apellido,
+                        foto: row.foto,
+                        identificador: row.identificador,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: usuarios },
                     res,
                     conn
                 );
@@ -204,6 +326,82 @@ export class Usuarios {
                 const results = await conn.query(deleteUsuariosService, [id]);
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
+                    res,
+                    conn
+                );
+            }
+        )(req, res, next);
+    }
+
+    async getUserWithPermissions(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        await tryCatch(
+            async (req: Request, res: Response, next: NextFunction) => {
+                const conn = await pool.getConnection();
+                const { id } = req.params;
+                const results = await conn.query(
+                    getUserWithPermissionsService,
+                    [id]
+                );
+
+                if (!results.length) {
+                    resultHandler(
+                        {
+                            status: STATUS_OK,
+                            success: false,
+                            result: "Usuario no encontrado",
+                        },
+                        res,
+                        conn
+                    );
+                    return;
+                }
+
+                const user = results[0];
+
+                const groups = results.reduce((acc: any[], curr: any) => {
+                    if (
+                        curr.grupo_id &&
+                        !acc.some((g) => g.id === curr.grupo_id)
+                    ) {
+                        acc.push({
+                            id: curr.grupo_id,
+                            nombre: curr.grupo_nombre,
+                        });
+                    }
+                    return acc;
+                }, []);
+
+                const permissions = results.reduce((acc: any[], curr: any) => {
+                    if (
+                        curr.permiso_id &&
+                        !acc.some((p) => p.id === curr.permiso_id)
+                    ) {
+                        acc.push({
+                            id: curr.permiso_id,
+                            nombre: curr.permiso_nombre,
+                            descripcion: curr.permiso_descripcion,
+                        });
+                    }
+                    return acc;
+                }, []);
+
+                const result = {
+                    id: user.id,
+                    nombre: user.nombre,
+                    apellido: user.apellido,
+                    foto: user.foto,
+                    identificador: user.identificador,
+                    id_proyecto: user.id_proyecto,
+                    grupos: groups,
+                    permisos: permissions,
+                };
+
+                resultHandler(
+                    { status: STATUS_OK, success: true, result },
                     res,
                     conn
                 );
