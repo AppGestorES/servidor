@@ -24,6 +24,7 @@ import { authMiddleware } from "@middlewares/auth";
 const router = Router();
 
 router.use(sesiones);
+router.use(pages);
 router.use(authMiddleware, materiasPrimas);
 router.use(authMiddleware, proyectos);
 router.use(authMiddleware, usuarios);
@@ -40,6 +41,5 @@ router.use(authMiddleware, formatos);
 router.use(authMiddleware, proveedores);
 router.use(authMiddleware, formulas);
 router.use(authMiddleware, vehiculos);
-router.use(authMiddleware, pages);
 
 export default router;
