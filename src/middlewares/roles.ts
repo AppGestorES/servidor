@@ -1,30 +1,32 @@
 import { Request, Response, NextFunction } from "express";
-import { resultHandler, STATUS_NO_ACCESS } from "@middlewares/resultHandler";
+import pool from "@config/db";
 
-const forbidden = ((res: Response) => {
-    return resultHandler(
-        {
-            status: STATUS_NO_ACCESS,
-            success: false,
-            result: "Acceso denegado.",
-        },
-        res
-    );
-})
+import { getUserWithPermissionsService } from "@services/permisosService";
 
-function admin(req: Request, res: Response, next: NextFunction) {
-    if (req.user && req.user.rol < 20) return forbidden(res);
-    next();
+async function getUserPermissions(userId: number): Promise<string[]> {
+    const result = await pool.query(getUserWithPermissionsService, [userId]);
+    const permissions = new Set<string>();
+
+    result.rows.forEach((row: any) => {
+        if (row.permiso_nombre) {
+            permissions.add(row.permiso_nombre);
+        }
+    });
+
+    return Array.from(permissions);
 }
 
-function viewer(req: Request, res: Response, next: NextFunction) {
-    if (!req.user || !req.user.rol && req.user.rol != 0) return forbidden(res);
-    next();
+async function checkPermission(requiredPermission: string) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        const userId = (req as any).user.id;
+        const userPermissions = await getUserPermissions(userId);
+
+        if (userPermissions.includes(requiredPermission)) {
+            next();
+        } else {
+            res.status(403).json({ message: "No tienes permisos suficientes para acceder a esta ruta" });
+        }
+    };
 }
 
-function self(req: Request, res: Response, next: NextFunction) {
-    if (!req.user || req.body.id_usuario != req.user.id && req.user.rol < 20) return forbidden(res);
-    next();
-}
-
-module.exports = { admin, viewer, self };
+export { checkPermission };

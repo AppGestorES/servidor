@@ -19,25 +19,27 @@ import proveedores from "@routes/v1/proveedores";
 import formulas from "@routes/v1/formulas"
 import vehiculos from "@routes/v1/vehiculos"
 
+import { authMiddleware } from "@middlewares/auth";
+
 const router = Router();
 
-router.use(materiasPrimas);
-router.use(proyectos);
-router.use(usuarios);
-router.use(permisosRouter);
-router.use(salidaProductos);
+router.use(authMiddleware, materiasPrimas);
+router.use(authMiddleware, proyectos);
+router.use(authMiddleware, usuarios);
+router.use(authMiddleware, permisosRouter);
+router.use(authMiddleware, salidaProductos);
 router.use(sesiones);
-router.use(productosFinales);
-router.use(operarios);
-router.use(ingredientes);
-router.use(envasados);
-router.use(entradaProductos)
-router.use(logs);
-router.use(destinos);
-router.use(formatos);
-router.use(proveedores);
-router.use(formulas);
-router.use(vehiculos);
-router.use(pages);
+router.use(authMiddleware, productosFinales);
+router.use(authMiddleware, operarios);
+router.use(authMiddleware, ingredientes);
+router.use(authMiddleware, envasados);
+router.use(authMiddleware, entradaProductos)
+router.use(authMiddleware, logs);
+router.use(authMiddleware, destinos);
+router.use(authMiddleware, formatos);
+router.use(authMiddleware, proveedores);
+router.use(authMiddleware, formulas);
+router.use(authMiddleware, vehiculos);
+router.use(authMiddleware, pages);
 
 export default router;

@@ -12,6 +12,8 @@
             "@types/*": ["src/types/*"],
             "@utils/*": ["src/utils/*"]
         },
+        "typeRoots": ["./node_modules/@types", "./src/types"],
+        "types": ["node"],
         "target": "es6",
         "module": "commonjs",
         "rootDir": "./src",
@@ -20,6 +22,6 @@
         "strict": true,
         "moduleResolution": "node"
     },
-    "include": ["src/**/*", "src/types/**/*"],
+    "include": ["src/**/*", "src/types/global.d.ts"],
     "exclude": ["node_modules", "dist"]
 }
