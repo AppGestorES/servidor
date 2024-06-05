@@ -14,6 +14,7 @@ import {
     deleteDestinosService,
 } from "@services/destinosService";
 import {
+    getDestinosInterface,
     postDestinosInterface,
     putDestinosInterface,
 } from "@interfaces/destinos.interface";
@@ -24,7 +25,7 @@ export class Destinos {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const results = await conn.query(getDestinosService);
-                const destinos = results.map((row: any) => ({
+                const destinos: getDestinosInterface = results.map((row: any) => ({
                     id: row.id,
                     nombre: row.nombre,
                     proyecto: {
@@ -54,7 +55,7 @@ export class Destinos {
                 const conn = await pool.getConnection();
                 const id = req.params.id;
                 const results = await conn.query(getDestinosByIdService, [id]);
-                const destinos = results.map((row: any) => ({
+                const destinos: getDestinosInterface = results.map((row: any) => ({
                     id: row.id,
                     nombre: row.nombre,
                     proyecto: {
@@ -84,7 +85,7 @@ export class Destinos {
                 const conn = await pool.getConnection();
                 const nombre = `%${req.params.nombre}%`;
                 const results = await conn.query(getDestinosByNombreService, [nombre]);
-                const destinos = results.map((row: any) => ({
+                const destinos: getDestinosInterface = results.map((row: any) => ({
                     id: row.id,
                     nombre: row.nombre,
                     proyecto: {
@@ -121,7 +122,7 @@ export class Destinos {
                     getDestinosByIdProyectoService,
                     [id]
                 );
-                const destinos = results.map((row: any) => ({
+                const destinos: getDestinosInterface = results.map((row: any) => ({
                     id: row.id,
                     nombre: row.nombre,
                     proyecto: {
