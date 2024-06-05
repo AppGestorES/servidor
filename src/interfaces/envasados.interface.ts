@@ -1,7 +1,6 @@
 export interface envasadosInterface {
     id: number;
     nombre: string;
-    id_proyecto: number;
 }
 
 export interface getEnvasadosInterface {
