@@ -1,13 +1,14 @@
+import { proyectosInterface } from "./proyectos.interface";
+
 export interface vehiculosInterface {
     id: number;
     matricula: string;
-    id_proyecto: number;
 }
 
 export interface getVehiculosInterface {
     id: number;
     matricula: string;
-    id_proyecto: number;
+    proyecto: proyectosInterface;
 }
 
 export interface postVehiculosInterface {

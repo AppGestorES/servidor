@@ -15,6 +15,7 @@ import {
 import {
     postVehiculosInterface,
     putVehiculosInterface,
+    getVehiculosInterface,
 } from "@interfaces/vehiculos.interface";
 
 export class Vehiculos {
@@ -23,8 +24,25 @@ export class Vehiculos {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const results = await conn.query(getVehiculosService);
+                const vehiculos: getVehiculosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        matricula: row.matricula,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: vehiculos },
                     res,
                     conn
                 );
@@ -41,11 +59,29 @@ export class Vehiculos {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const matricula = `%${req.params.matricula}%`;
-                const results = await conn.query(getVehiculosByMatriculaService, [
-                    matricula,
-                ]);
+                const results = await conn.query(
+                    getVehiculosByMatriculaService,
+                    [matricula]
+                );
+                const vehiculos: getVehiculosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        matricula: row.matricula,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: vehiculos },
                     res,
                     conn
                 );
@@ -62,11 +98,29 @@ export class Vehiculos {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const id_proyecto = req.params.id_proyecto;
-                const results = await conn.query(getVehiculosByProyectoService, [
-                    id_proyecto,
-                ]);
+                const results = await conn.query(
+                    getVehiculosByProyectoService,
+                    [id_proyecto]
+                );
+                const vehiculos: getVehiculosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        matricula: row.matricula,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: vehiculos },
                     res,
                     conn
                 );
@@ -78,10 +132,8 @@ export class Vehiculos {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const {
-                    matricula,
-                    id_proyecto,
-                } = req.body as postVehiculosInterface;
+                const { matricula, id_proyecto } =
+                    req.body as postVehiculosInterface;
                 const results = await conn.query(postVehiculosService, [
                     matricula,
                     id_proyecto,
@@ -99,10 +151,8 @@ export class Vehiculos {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const {
-                    matricula,
-                    id_proyecto,
-                } = req.body as putVehiculosInterface;
+                const { matricula, id_proyecto } =
+                    req.body as putVehiculosInterface;
                 const { id } = req.params;
                 const results = await conn.query(putVehiculosService, [
                     matricula,
