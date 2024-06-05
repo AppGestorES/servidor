@@ -1,3 +1,5 @@
+import { proyectosInterface } from "./proyectos.interface";
+
 export interface envasadosInterface {
     id: number;
     nombre: string;
@@ -6,7 +8,7 @@ export interface envasadosInterface {
 export interface getEnvasadosInterface {
     id: number;
     nombre: string;
-    id_proyecto: number;
+    proyecto: proyectosInterface;
 }
 
 export interface postEnvasadosInterface {
