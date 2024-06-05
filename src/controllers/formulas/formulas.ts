@@ -15,6 +15,7 @@ import {
 import {
     postFormulasInterface,
     putFormulasInterface,
+    getFormulasInterface,
 } from "@interfaces/formulas.interface";
 
 export class Formulas {
@@ -23,8 +24,26 @@ export class Formulas {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const results = await conn.query(getFormulasService);
+                const formulas: getFormulasInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        caducidad: row.caducidad,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: formulas },
                     res,
                     conn
                 );
@@ -32,11 +51,7 @@ export class Formulas {
         )(req, res, next);
     }
 
-    async getFormulasByNombre(
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ) {
+    async getFormulasByNombre(req: Request, res: Response, next: NextFunction) {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
@@ -44,8 +59,26 @@ export class Formulas {
                 const results = await conn.query(getFormulasByNombreService, [
                     nombre,
                 ]);
+                const formulas: getFormulasInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        caducidad: row.caducidad,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: formulas },
                     res,
                     conn
                 );
@@ -65,8 +98,26 @@ export class Formulas {
                 const results = await conn.query(getFormulasByProyectoService, [
                     id_proyecto,
                 ]);
+                const formulas: getFormulasInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        caducidad: row.caducidad,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: formulas },
                     res,
                     conn
                 );
@@ -78,11 +129,8 @@ export class Formulas {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const {
-                    nombre,
-                    caducidad,
-                    id_proyecto,
-                } = req.body as postFormulasInterface;
+                const { nombre, caducidad, id_proyecto } =
+                    req.body as postFormulasInterface;
                 const results = await conn.query(postFormulasService, [
                     nombre,
                     caducidad,
@@ -101,11 +149,8 @@ export class Formulas {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const {
-                    nombre,
-                    caducidad,
-                    id_proyecto,
-                } = req.body as putFormulasInterface;
+                const { nombre, caducidad, id_proyecto } =
+                    req.body as putFormulasInterface;
                 const { id } = req.params;
                 const results = await conn.query(putFormulasService, [
                     nombre,
