@@ -12,8 +12,6 @@
             "@types/*": ["src/types/*"],
             "@utils/*": ["src/utils/*"]
         },
-        "typeRoots": ["./node_modules/@types", "./src/types"],
-        "types": ["node"],
         "target": "es6",
         "module": "commonjs",
         "rootDir": "./src",

@@ -1,38 +1,30 @@
 import { Request, Response, NextFunction } from "express";
-import pool from "@config/db";
-import { getUserWithPermissionsService } from "@services/permisosService";
+import { resultHandler, STATUS_NO_ACCESS } from "@middlewares/resultHandler";
 
-async function getUserPermissions(userId: number): Promise<string[]> {
-    const result = await pool.query(getUserWithPermissionsService, [userId]);
-    const permissions = new Set<string>();
+const forbidden = ((res: Response) => {
+    return resultHandler(
+        {
+            status: STATUS_NO_ACCESS,
+            success: false,
+            result: "Acceso denegado.",
+        },
+        res
+    );
+})
 
-    result.rows.forEach((row: any) => {
-        if (row.permiso_nombre) {
-            permissions.add(row.permiso_nombre);
-        }
-    });
-
-    return Array.from(permissions);
+function admin(req: Request, res: Response, next: NextFunction) {
+    if (req.user && req.user.rol < 20) return forbidden(res);
+    next();
 }
 
-const checkPermission = (requiredPermission: string) => {
-    return async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const userId = req.user?.id;
-            if (!userId) {
-                return res.status(403).json({ message: "No se ha encontrado el usuario" });
-            }
-            const userPermissions = await getUserPermissions(userId);
-
-            if (userPermissions.includes(requiredPermission)) {
-                next();
-            } else {
-                res.status(403).json({ message: "No tienes permisos suficientes para acceder a esta ruta" });
-            }
-        } catch (error) {
-            res.status(500).json({ message: "Error verificando permisos" });
-        }
-    };
+function viewer(req: Request, res: Response, next: NextFunction) {
+    if (!req.user || !req.user.rol && req.user.rol != 0) return forbidden(res);
+    next();
 }
 
-export { checkPermission };
+function self(req: Request, res: Response, next: NextFunction) {
+    if (!req.user || req.body.id_usuario != req.user.id && req.user.rol < 20) return forbidden(res);
+    next();
+}
+
+module.exports = { admin, viewer, self };

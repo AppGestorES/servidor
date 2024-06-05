@@ -1,12 +1,13 @@
 import { Request, Response, NextFunction } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
+
 import { STATUS_NO_TOKEN, resultHandler } from "@middlewares/resultHandler";
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+module.exports = (req: Request, res: Response, next: NextFunction) => {
     const token = req.header("x-auth-token");
 
-    if (!token) {
-        return resultHandler(
+    if (!token)
+        resultHandler(
             {
                 status: STATUS_NO_TOKEN,
                 success: false,
@@ -14,35 +15,10 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
             },
             res
         );
-    }
-
-    const secret = process.env.JWT_SECRET;
-    if (!secret) {
-        return resultHandler(
-            {
-                status: STATUS_NO_TOKEN,
-                success: false,
-                result: "No se ha configurado el secreto de JWT.",
-            },
-            res
-        );
-    }
 
     try {
-        const decoded = jwt.verify(token, secret) as JwtPayload & { id: number };
-        if (typeof decoded === 'string') {
-            return resultHandler(
-                {
-                    status: STATUS_NO_TOKEN,
-                    success: false,
-                    result: "El token no es válido.",
-                },
-                res
-            );
-        }
-
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
-        next();
     } catch (error) {
         return resultHandler(
             {
@@ -53,6 +29,6 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
             res
         );
     }
-};
 
-export { authMiddleware };
+    next();
+};
