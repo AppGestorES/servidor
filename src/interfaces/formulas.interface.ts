@@ -1,30 +1,26 @@
-export interface materiasPrimasInterface {
+export interface formulasInterface {
     id: number;
     nombre: string;
     caducidad: number;
-    stock_kgs: number;
     id_proyecto: number;
 }
 
-export interface getMateriasPrimasInterface {
+export interface getFormulasInterface {
     id: number;
     nombre: string;
     caducidad: number;
-    stock_kgs: number;
     id_proyecto: number;
 }
 
-export interface postMateriasPrimasInterface {
+export interface postFormulasInterface {
     nombre: string;
     caducidad: number;
-    stock_kgs: number;
     id_proyecto: number;
 }
 
-export interface putMateriasPrimasInterface {
+export interface putFormulasInterface {
     id: number;
     nombre: string;
     caducidad: number;
-    stock_kgs: number;
     id_proyecto: number;
 }

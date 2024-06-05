@@ -5,24 +5,24 @@ import tryCatch from "@utils/tryCatch";
 import { STATUS_OK, resultHandler } from "@middlewares/resultHandler";
 
 import {
-    getMateriasPrimasService,
-    getMateriasPrimasByNombreService,
-    getMateriasPrimasByProyectoService,
-    postMateriasPrimasService,
-    putMateriasPrimasService,
-    deleteMateriasPrimasService,
-} from "@services/materiasPrimasService";
+    getEnvasadosService,
+    getEnvasadosByNombreService,
+    getEnvasadosByProyectoService,
+    postEnvasadosService,
+    putEnvasadosService,
+    deleteEnvasadosService,
+} from "@services/envasadosService";
 import {
-    postMateriasPrimasInterface,
-    putMateriasPrimasInterface,
-} from "@interfaces/materiasPrimas.interface";
+    postEnvasadosInterface,
+    putEnvasadosInterface,
+} from "@interfaces/envasados.interface";
 
-export class MateriasPrimas {
-    async getMateriasPrimas(req: Request, res: Response, next: NextFunction) {
+export class Envasados {
+    async getEnvasados(req: Request, res: Response, next: NextFunction) {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const results = await conn.query(getMateriasPrimasService);
+                const results = await conn.query(getEnvasadosService);
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
                     res,
@@ -32,7 +32,7 @@ export class MateriasPrimas {
         )(req, res, next);
     }
 
-    async getMateriasPrimasByNombre(
+    async getEnvasadosByNombre(
         req: Request,
         res: Response,
         next: NextFunction
@@ -41,7 +41,7 @@ export class MateriasPrimas {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const nombre = `%${req.params.nombre}%`;
-                const results = await conn.query(getMateriasPrimasByNombreService, [
+                const results = await conn.query(getEnvasadosByNombreService, [
                     nombre,
                 ]);
                 resultHandler(
@@ -53,7 +53,7 @@ export class MateriasPrimas {
         )(req, res, next);
     }
 
-    async getMateriasPrimasByProyecto(
+    async getEnvasadosByProyecto(
         req: Request,
         res: Response,
         next: NextFunction
@@ -62,7 +62,27 @@ export class MateriasPrimas {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const id_proyecto = req.params.id_proyecto;
-                const results = await conn.query(getMateriasPrimasByProyectoService, [
+                const results = await conn.query(
+                    getEnvasadosByProyectoService,
+                    [id_proyecto]
+                );
+                resultHandler(
+                    { status: STATUS_OK, success: true, result: results },
+                    res,
+                    conn
+                );
+            }
+        )(req, res, next);
+    }
+
+    async postEnvasados(req: Request, res: Response, next: NextFunction) {
+        await tryCatch(
+            async (req: Request, res: Response, next: NextFunction) => {
+                const conn = await pool.getConnection();
+                const { nombre, id_proyecto } =
+                    req.body as postEnvasadosInterface;
+                const results = await conn.query(postEnvasadosService, [
+                    nombre,
                     id_proyecto,
                 ]);
                 resultHandler(
@@ -74,46 +94,15 @@ export class MateriasPrimas {
         )(req, res, next);
     }
 
-    async postMateriasPrimas(req: Request, res: Response, next: NextFunction) {
+    async putEnvasados(req: Request, res: Response, next: NextFunction) {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const {
-                    nombre,
-                    caducidad,
-                    stock_kgs,
-                    id_proyecto,
-                } = req.body as postMateriasPrimasInterface;
-                const results = await conn.query(postMateriasPrimasService, [
-                    nombre,
-                    caducidad,
-                    stock_kgs,
-                    id_proyecto,
-                ]);
-                resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
-                    res,
-                    conn
-                );
-            }
-        )(req, res, next);
-    }
-
-    async putMateriasPrimas(req: Request, res: Response, next: NextFunction) {
-        await tryCatch(
-            async (req: Request, res: Response, next: NextFunction) => {
-                const conn = await pool.getConnection();
-                const {
-                    nombre,
-                    caducidad,
-                    stock_kgs,
-                    id_proyecto,
-                } = req.body as putMateriasPrimasInterface;
+                const { nombre, id_proyecto } =
+                    req.body as putEnvasadosInterface;
                 const { id } = req.params;
-                const results = await conn.query(putMateriasPrimasService, [
+                const results = await conn.query(putEnvasadosService, [
                     nombre,
-                    caducidad,
-                    stock_kgs,
                     id_proyecto,
                     id,
                 ]);
@@ -126,12 +115,12 @@ export class MateriasPrimas {
         )(req, res, next);
     }
 
-    async deleteMateriasPrimas(req: Request, res: Response, next: NextFunction) {
+    async deleteEnvasados(req: Request, res: Response, next: NextFunction) {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const { id } = req.params;
-                const results = await conn.query(deleteMateriasPrimasService, [id]);
+                const results = await conn.query(deleteEnvasadosService, [id]);
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
                     res,
