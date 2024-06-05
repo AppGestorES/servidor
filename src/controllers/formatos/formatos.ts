@@ -15,6 +15,7 @@ import {
 import {
     postFormatosInterface,
     putFormatosInterface,
+    getFormatosInterface
 } from "@interfaces/formatos.interface";
 
 export class Formatos {
@@ -23,8 +24,23 @@ export class Formatos {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const results = await conn.query(getFormatosService);
+                const formatos: getFormatosInterface[] = results.map((row: any) => ({
+                    id: row.id,
+                    nombre: row.nombre,
+                    proyecto: {
+                        id: row.proyecto_id,
+                        nombre: row.proyecto_nombre,
+                        nif: row.proyecto_nif,
+                        direccion: row.proyecto_direccion,
+                        codigo_postal: row.proyecto_codigo_postal,
+                        poblacion: row.proyecto_poblacion,
+                        telefono: row.proyecto_telefono,
+                        correo_electronico: row.proyecto_correo_electronico,
+                        logo: row.proyecto_logo
+                    }
+                }));
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: formatos },
                     res,
                     conn
                 );
@@ -40,8 +56,23 @@ export class Formatos {
                 const results = await conn.query(getFormatosByNombreService, [
                     nombre,
                 ]);
+                const formatos: getFormatosInterface[] = results.map((row: any) => ({
+                    id: row.id,
+                    nombre: row.nombre,
+                    proyecto: {
+                        id: row.proyecto_id,
+                        nombre: row.proyecto_nombre,
+                        nif: row.proyecto_nif,
+                        direccion: row.proyecto_direccion,
+                        codigo_postal: row.proyecto_codigo_postal,
+                        poblacion: row.proyecto_poblacion,
+                        telefono: row.proyecto_telefono,
+                        correo_electronico: row.proyecto_correo_electronico,
+                        logo: row.proyecto_logo
+                    }
+                }));
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: formatos },
                     res,
                     conn
                 );
@@ -58,11 +89,27 @@ export class Formatos {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const id_proyecto = req.params.id_proyecto;
-                const results = await conn.query(getFormatosByProyectoService, [
-                    id_proyecto,
-                ]);
+                const results = await conn.query(
+                    getFormatosByProyectoService,
+                    [id_proyecto]
+                );
+                const formatos: getFormatosInterface[] = results.map((row: any) => ({
+                    id: row.id,
+                    nombre: row.nombre,
+                    proyecto: {
+                        id: row.proyecto_id,
+                        nombre: row.proyecto_nombre,
+                        nif: row.proyecto_nif,
+                        direccion: row.proyecto_direccion,
+                        codigo_postal: row.proyecto_codigo_postal,
+                        poblacion: row.proyecto_poblacion,
+                        telefono: row.proyecto_telefono,
+                        correo_electronico: row.proyecto_correo_electronico,
+                        logo: row.proyecto_logo
+                    }
+                }));
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: formatos },
                     res,
                     conn
                 );
