@@ -29,7 +29,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     }
 
     try {
-        const decoded = jwt.verify(token, secret);
+        const decoded = jwt.verify(token, secret) as JwtPayload & { id: number };
         if (typeof decoded === 'string') {
             return resultHandler(
                 {
@@ -41,7 +41,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
             );
         }
 
-        (req as any).user = decoded as JwtPayload;
+        req.user = decoded;
         next();
     } catch (error) {
         return resultHandler(

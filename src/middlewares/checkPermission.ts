@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import pool from "@config/db";
-
 import { getUserWithPermissionsService } from "@services/permisosService";
 
 async function getUserPermissions(userId: number): Promise<string[]> {
@@ -16,15 +15,22 @@ async function getUserPermissions(userId: number): Promise<string[]> {
     return Array.from(permissions);
 }
 
-async function checkPermission(requiredPermission: string) {
+const checkPermission = (requiredPermission: string) => {
     return async (req: Request, res: Response, next: NextFunction) => {
-        const userId = (req as any).user.id;
-        const userPermissions = await getUserPermissions(userId);
+        try {
+            const userId = req.user?.id;
+            if (!userId) {
+                return res.status(403).json({ message: "No se ha encontrado el usuario" });
+            }
+            const userPermissions = await getUserPermissions(userId);
 
-        if (userPermissions.includes(requiredPermission)) {
-            next();
-        } else {
-            res.status(403).json({ message: "No tienes permisos suficientes para acceder a esta ruta" });
+            if (userPermissions.includes(requiredPermission)) {
+                next();
+            } else {
+                res.status(403).json({ message: "No tienes permisos suficientes para acceder a esta ruta" });
+            }
+        } catch (error) {
+            res.status(500).json({ message: "Error verificando permisos" });
         }
     };
 }
