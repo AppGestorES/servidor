@@ -23,12 +23,12 @@ import { authMiddleware } from "@middlewares/auth";
 
 const router = Router();
 
+router.use(sesiones);
 router.use(authMiddleware, materiasPrimas);
 router.use(authMiddleware, proyectos);
 router.use(authMiddleware, usuarios);
 router.use(authMiddleware, permisosRouter);
 router.use(authMiddleware, salidaProductos);
-router.use(sesiones);
 router.use(authMiddleware, productosFinales);
 router.use(authMiddleware, operarios);
 router.use(authMiddleware, ingredientes);
