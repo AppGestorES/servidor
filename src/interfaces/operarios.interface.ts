@@ -1,3 +1,5 @@
+import { proyectosInterface } from "./proyectos.interface";
+
 export interface operariosInterface {
     id: number;
     nombre: string;
@@ -6,7 +8,7 @@ export interface operariosInterface {
 export interface getOperariosInterface {
     id: number;
     nombre: string;
-    id_proyecto: number;
+    proyecto: proyectosInterface;
 }
 
 export interface postOperariosInterface {
