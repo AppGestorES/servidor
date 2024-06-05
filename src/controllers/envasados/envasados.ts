@@ -15,6 +15,7 @@ import {
 import {
     postEnvasadosInterface,
     putEnvasadosInterface,
+    getEnvasadosInterface,
 } from "@interfaces/envasados.interface";
 
 export class Envasados {
@@ -23,8 +24,25 @@ export class Envasados {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const results = await conn.query(getEnvasadosService);
+                const envasados: getEnvasadosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: envasados },
                     res,
                     conn
                 );
@@ -44,8 +62,25 @@ export class Envasados {
                 const results = await conn.query(getEnvasadosByNombreService, [
                     nombre,
                 ]);
+                const envasados: getEnvasadosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: envasados },
                     res,
                     conn
                 );
@@ -66,8 +101,25 @@ export class Envasados {
                     getEnvasadosByProyectoService,
                     [id_proyecto]
                 );
+                const envasados: getEnvasadosInterface[] = results.map(
+                    (row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    })
+                );
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: envasados },
                     res,
                     conn
                 );
