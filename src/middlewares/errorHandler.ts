@@ -3,7 +3,9 @@ import {
     ValidationError,
     NotFoundError,
     UnauthorizedError,
-    DuplicateEntryError
+    DuplicateEntryError,
+    PrimaryKeyEntryError,
+    ForeignKeyEntryError
 } from "@middlewares/appError";
 import {resultHandler} from "@middlewares/resultHandler";
 
@@ -18,6 +20,10 @@ const errorHandler = (
     }
 
     if (error instanceof DuplicateEntryError) {
+        resultHandler({ status: error.statusCode, success: false, result: error.message }, res);
+    }
+
+    if (error instanceof PrimaryKeyEntryError || error instanceof ForeignKeyEntryError){
         resultHandler({ status: error.statusCode, success: false, result: error.message }, res);
     }
 
