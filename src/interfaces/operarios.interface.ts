@@ -1,20 +1,20 @@
-export interface envasadosInterface {
+export interface operariosInterface {
     id: number;
     nombre: string;
 }
 
-export interface getEnvasadosInterface {
+export interface getOperariosInterface {
     id: number;
     nombre: string;
     id_proyecto: number;
 }
 
-export interface postEnvasadosInterface {
+export interface postOperariosInterface {
     nombre: string;
     id_proyecto: number;
 }
 
-export interface putEnvasadosInterface {
+export interface putOperariosInterface {
     id: number;
     nombre: string;
     id_proyecto: number;
