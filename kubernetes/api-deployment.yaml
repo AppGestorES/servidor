@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: appgestorapi-deployment
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: appgestorapi
+    template:
+        metadata:
+            labels:
+                app: appgestorapi
+        spec:
+            containers:
+                - name: appgestorapi
+                  image: appgestorapi:latest
+                  ports:
+                      - containerPort: 3000
+                  env:
+                      - name: DOCKER_CONTAINER
+                        value: "1"
+                      - name: DATABASE_URL
+                        value: mysql://myuser:mypassword@mariadb-service:3306/appgestordb
+                  envFrom:
+                      - secretRef:
+                            name: mariadb-secret
+            volumes:
+                - name: appgestorapi-storage
+                  emptyDir: {}
