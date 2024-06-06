@@ -23,7 +23,7 @@ import { authMiddleware } from "@middlewares/auth";
 
 const router = Router();
 
-router.use(sesiones);
+router.use(authMiddleware);
 router.use(materiasPrimas);
 router.use(proyectos);
 router.use(usuarios);
