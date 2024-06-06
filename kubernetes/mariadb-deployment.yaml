@@ -17,15 +17,9 @@ spec:
                   image: mariadb:latest
                   env:
                       - name: MARIADB_ROOT_PASSWORD
-                        valueFrom:
-                            secretKeyRef:
-                                name: mariadb-secret
-                                key: root-password
+                        value: "6@43VPM555kc"
                       - name: MARIADB_DATABASE
-                        valueFrom:
-                            secretKeyRef:
-                                name: mariadb-secret
-                                key: database-name
+                        value: "appgestordb"
                   ports:
                       - containerPort: 3306
                   volumeMounts:
@@ -33,38 +27,4 @@ spec:
                         mountPath: /var/lib/mysql
             volumes:
                 - name: mariadb-storage
-                  persistentVolumeClaim:
-                      claimName: mariadb-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-    name: mariadb-pvc
-spec:
-    accessModes:
-        - ReadWriteOnce
-    resources:
-        requests:
-            storage: 1Gi
----
-apiVersion: v1
-kind: Secret
-metadata:
-    name: mariadb-secret
-type: Opaque
-data:
-    root-password: NkA0M1ZQTU5552tj
-    database-name: YXBwZ2VzdG9yZGI=
----
-apiVersion: v1
-kind: Service
-metadata:
-    name: mariadb-service
-spec:
-    type: NodePort
-    ports:
-        - port: 3306
-          targetPort: 3306
-          nodePort: 30931
-    selector:
-        app: mariadb
+                  emptyDir: {}
