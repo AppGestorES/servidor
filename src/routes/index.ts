@@ -23,6 +23,8 @@ import { authMiddleware } from "@middlewares/auth";
 
 const router = Router();
 
+router.use(sesiones);
+router.use(pages);
 router.use(authMiddleware);
 router.use(materiasPrimas);
 router.use(proyectos);
@@ -33,13 +35,12 @@ router.use(productosFinales);
 router.use(operarios);
 router.use(ingredientes);
 router.use(envasados);
-router.use(entradaProductos);
+router.use(entradaProductos)
 router.use(logs);
 router.use(destinos);
 router.use(formatos);
 router.use(proveedores);
 router.use(formulas);
 router.use(vehiculos);
-router.use(pages);
 
 export default router;
