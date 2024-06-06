@@ -25,7 +25,6 @@ const router = Router();
 
 router.use(sesiones);
 router.use(pages);
-
 router.use(authMiddleware);
 router.use(materiasPrimas);
 router.use(proyectos);
@@ -43,6 +42,5 @@ router.use(formatos);
 router.use(proveedores);
 router.use(formulas);
 router.use(vehiculos);
-
 
 export default router;

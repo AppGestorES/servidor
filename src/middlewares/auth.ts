@@ -3,7 +3,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { STATUS_NO_TOKEN, resultHandler } from "@middlewares/resultHandler";
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const token = req.header("x-auth-token");
+    const token = req.headers.authorization;
 
     if (!token) {
         return resultHandler(
