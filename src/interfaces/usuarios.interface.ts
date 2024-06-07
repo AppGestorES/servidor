@@ -7,6 +7,8 @@ export interface usuariosInterface {
     foto: string;
     contrasena: string;
     identificador: string;
+    es_admin: number;
+    proyecto_admin: number;
 }
 
 export interface getUsuariosInterface {
@@ -16,6 +18,8 @@ export interface getUsuariosInterface {
     foto: string;
     identificador: string;
     proyecto: proyectosInterface;
+    es_admin: number;
+    proyecto_admin: number;
 }
 
 export interface postUsuariosInterface {
@@ -23,7 +27,8 @@ export interface postUsuariosInterface {
     apellido: string;
     contrasena: string;
     identificador: string;
-    id_proyecto: number;
+    es_admin: number;
+    proyecto_admin: number;
 }
 
 export interface putUsuariosInterface {
@@ -34,4 +39,6 @@ export interface putUsuariosInterface {
     contrasena: string;
     identificador: string;
     id_proyecto: number;
+    es_admin: number;
+    proyecto_admin: number;
 }

@@ -263,15 +263,13 @@ export class Usuarios {
                     nombre,
                     apellido,
                     contrasena,
-                    identificador,
-                    id_proyecto,
+                    identificador
                 } = req.body as postUsuariosInterface;
                 const results = await conn.query(postUsuariosService, [
                     nombre,
                     apellido,
                     contrasena,
-                    identificador,
-                    id_proyecto,
+                    identificador
                 ]);
                 resultHandler(
                     {
