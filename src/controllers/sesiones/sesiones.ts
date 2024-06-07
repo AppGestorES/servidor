@@ -127,19 +127,8 @@ export class Sesiones {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const token = req.headers.authorization;
-                if (!token) {
-                    return resultHandler(
-                        {
-                            status: STATUS_NO_ACCESS,
-                            success: false,
-                            result: "Token no proporcionado.",
-                        },
-                        res
-                    );
-                }
-
                 try {
-                    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+                    const decoded = jwt.verify(token!, process.env.JWT_SECRET!);
                     return resultHandler(
                         {
                             status: STATUS_OK,
