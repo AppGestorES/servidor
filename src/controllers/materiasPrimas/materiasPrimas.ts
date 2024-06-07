@@ -15,6 +15,7 @@ import {
 import {
     postMateriasPrimasInterface,
     putMateriasPrimasInterface,
+    getMateriasPrimasInterface,
 } from "@interfaces/materiasPrimas.interface";
 
 export class MateriasPrimas {
@@ -23,8 +24,30 @@ export class MateriasPrimas {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const results = await conn.query(getMateriasPrimasService);
+                const materiasPrimas: getMateriasPrimasInterface[] =
+                    results.map((row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        caducidad: row.caducidad,
+                        stock_kgs: row.stock_kgs,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    }));
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    {
+                        status: STATUS_OK,
+                        success: true,
+                        result: materiasPrimas,
+                    },
                     res,
                     conn
                 );
@@ -41,11 +64,34 @@ export class MateriasPrimas {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const nombre = `%${req.params.nombre}%`;
-                const results = await conn.query(getMateriasPrimasByNombreService, [
-                    nombre,
-                ]);
+                const results = await conn.query(
+                    getMateriasPrimasByNombreService,
+                    [nombre]
+                );
+                const materiasPrimas: getMateriasPrimasInterface[] =
+                    results.map((row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        caducidad: row.caducidad,
+                        stock_kgs: row.stock_kgs,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    }));
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    {
+                        status: STATUS_OK,
+                        success: true,
+                        result: materiasPrimas,
+                    },
                     res,
                     conn
                 );
@@ -62,11 +108,34 @@ export class MateriasPrimas {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const id_proyecto = req.params.id_proyecto;
-                const results = await conn.query(getMateriasPrimasByProyectoService, [
-                    id_proyecto,
-                ]);
+                const results = await conn.query(
+                    getMateriasPrimasByProyectoService,
+                    [id_proyecto]
+                );
+                const materiasPrimas: getMateriasPrimasInterface[] =
+                    results.map((row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        caducidad: row.caducidad,
+                        stock_kgs: row.stock_kgs,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    }));
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    {
+                        status: STATUS_OK,
+                        success: true,
+                        result: materiasPrimas,
+                    },
                     res,
                     conn
                 );
@@ -78,12 +147,8 @@ export class MateriasPrimas {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const {
-                    nombre,
-                    caducidad,
-                    stock_kgs,
-                    id_proyecto,
-                } = req.body as postMateriasPrimasInterface;
+                const { nombre, caducidad, stock_kgs, id_proyecto } =
+                    req.body as postMateriasPrimasInterface;
                 const results = await conn.query(postMateriasPrimasService, [
                     nombre,
                     caducidad,
@@ -103,12 +168,8 @@ export class MateriasPrimas {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const {
-                    nombre,
-                    caducidad,
-                    stock_kgs,
-                    id_proyecto,
-                } = req.body as putMateriasPrimasInterface;
+                const { nombre, caducidad, stock_kgs, id_proyecto } =
+                    req.body as putMateriasPrimasInterface;
                 const { id } = req.params;
                 const results = await conn.query(putMateriasPrimasService, [
                     nombre,
@@ -126,12 +187,18 @@ export class MateriasPrimas {
         )(req, res, next);
     }
 
-    async deleteMateriasPrimas(req: Request, res: Response, next: NextFunction) {
+    async deleteMateriasPrimas(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const { id } = req.params;
-                const results = await conn.query(deleteMateriasPrimasService, [id]);
+                const results = await conn.query(deleteMateriasPrimasService, [
+                    id,
+                ]);
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
                     res,

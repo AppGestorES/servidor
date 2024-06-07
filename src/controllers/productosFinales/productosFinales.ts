@@ -15,6 +15,7 @@ import {
 import {
     postProductosFinalesInterface,
     putProductosFinalesInterface,
+    getProductosFinalesInterface,
 } from "@interfaces/productosFinales.interface";
 
 export class ProductosFinales {
@@ -23,8 +24,30 @@ export class ProductosFinales {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const results = await conn.query(getProductosFinalesService);
+                const productosFinales: getProductosFinalesInterface[] =
+                    results.map((row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        formula_id: row.formula_id,
+                        caducidad: row.caducidad,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    }));
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    {
+                        status: STATUS_OK,
+                        success: true,
+                        result: productosFinales,
+                    },
                     res,
                     conn
                 );
@@ -41,11 +64,34 @@ export class ProductosFinales {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const nombre = `%${req.params.nombre}%`;
-                const results = await conn.query(getProductosFinalesByNombreService, [
-                    nombre,
-                ]);
+                const results = await conn.query(
+                    getProductosFinalesByNombreService,
+                    [nombre]
+                );
+                const productosFinales: getProductosFinalesInterface[] =
+                    results.map((row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        formula_id: row.formula_id,
+                        caducidad: row.caducidad,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    }));
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    {
+                        status: STATUS_OK,
+                        success: true,
+                        result: productosFinales,
+                    },
                     res,
                     conn
                 );
@@ -62,11 +108,34 @@ export class ProductosFinales {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const id_proyecto = req.params.id_proyecto;
-                const results = await conn.query(getProductosFinalesByProyectoService, [
-                    id_proyecto,
-                ]);
+                const results = await conn.query(
+                    getProductosFinalesByProyectoService,
+                    [id_proyecto]
+                );
+                const productosFinales: getProductosFinalesInterface[] =
+                    results.map((row: any) => ({
+                        id: row.id,
+                        nombre: row.nombre,
+                        formula_id: row.formula_id,
+                        caducidad: row.caducidad,
+                        proyecto: {
+                            id: row.proyecto_id,
+                            nombre: row.proyecto_nombre,
+                            nif: row.proyecto_nif,
+                            direccion: row.proyecto_direccion,
+                            codigo_postal: row.proyecto_codigo_postal,
+                            poblacion: row.proyecto_poblacion,
+                            telefono: row.proyecto_telefono,
+                            correo_electronico: row.proyecto_correo_electronico,
+                            logo: row.proyecto_logo,
+                        },
+                    }));
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    {
+                        status: STATUS_OK,
+                        success: true,
+                        result: productosFinales,
+                    },
                     res,
                     conn
                 );
@@ -74,16 +143,16 @@ export class ProductosFinales {
         )(req, res, next);
     }
 
-    async postProductosFinales(req: Request, res: Response, next: NextFunction) {
+    async postProductosFinales(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const {
-                    nombre,
-                    formula_id,
-                    caducidad,
-                    id_proyecto,
-                } = req.body as postProductosFinalesInterface;
+                const { nombre, formula_id, caducidad, id_proyecto } =
+                    req.body as postProductosFinalesInterface;
                 const results = await conn.query(postProductosFinalesService, [
                     nombre,
                     formula_id,
@@ -103,12 +172,8 @@ export class ProductosFinales {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const {
-                    nombre,
-                    formula_id,
-                    caducidad,
-                    id_proyecto,
-                } = req.body as putProductosFinalesInterface;
+                const { nombre, formula_id, caducidad, id_proyecto } =
+                    req.body as putProductosFinalesInterface;
                 const { id } = req.params;
                 const results = await conn.query(putProductosFinalesService, [
                     nombre,
@@ -126,12 +191,19 @@ export class ProductosFinales {
         )(req, res, next);
     }
 
-    async deleteProductosFinales(req: Request, res: Response, next: NextFunction) {
+    async deleteProductosFinales(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const { id } = req.params;
-                const results = await conn.query(deleteProductosFinalesService, [id]);
+                const results = await conn.query(
+                    deleteProductosFinalesService,
+                    [id]
+                );
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
                     res,

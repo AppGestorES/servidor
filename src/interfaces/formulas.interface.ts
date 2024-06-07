@@ -1,15 +1,16 @@
+import { proyectosInterface } from "./proyectos.interface";
+
 export interface formulasInterface {
     id: number;
     nombre: string;
     caducidad: number;
-    id_proyecto: number;
 }
 
 export interface getFormulasInterface {
     id: number;
     nombre: string;
     caducidad: number;
-    id_proyecto: number;
+    proyecto: proyectosInterface;
 }
 
 export interface postFormulasInterface {

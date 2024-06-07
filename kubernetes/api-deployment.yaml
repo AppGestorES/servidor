@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: appgestorapi-deployment
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: appgestorapi
+    template:
+        metadata:
+            labels:
+                app: appgestorapi
+        spec:
+            containers:
+                - name: appgestorapi
+                  image: 220286409224.dkr.ecr.us-east-1.amazonaws.com/appgestor:latest
+                  ports:
+                      - containerPort: 3000
+                  env:
+                      - name: DB_HOST
+                        value: "aa7ab58d135ab456b824678bb20cf966-39863203.us-east-1.elb.amazonaws.com"
+                      - name: DB_USER_PROD
+                        value: "root"
+                      - name: CONTRASENASQL
+                        value: "6@43VPM555kc"
+                      - name: DATABASESQL
+                        value: "appgestordb"
+            volumes:
+                - name: appgestorapi-storage
+                  emptyDir: {}

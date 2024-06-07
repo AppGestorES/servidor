@@ -1,13 +1,14 @@
+import { proyectosInterface } from "./proyectos.interface";
+
 export interface formatosInterface {
     id: number;
     nombre: string;
-    id_proyecto: number;
 }
 
 export interface getFormatosInterface {
     id: number;
     nombre: string;
-    id_proyecto: number;
+    proyecto: proyectosInterface;
 }
 
 export interface postFormatosInterface {

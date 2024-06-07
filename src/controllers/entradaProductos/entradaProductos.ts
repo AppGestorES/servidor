@@ -17,6 +17,7 @@ import {
 import {
     postEntradasInterface,
     putEntradasInterface,
+    getEntradasInterface
 } from "@interfaces/entradaProductos.interface";
 
 export class EntradaProductos {
@@ -25,8 +26,37 @@ export class EntradaProductos {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const results = await conn.query(getEntradasService);
+                const entradas: getEntradasInterface[] = results.map((row: any) => ({
+                    id: row.id,
+                    producto_final_id: row.producto_final_id,
+                    fecha_entrada: row.fecha_entrada,
+                    proveedor: row.proveedor,
+                    numero_albaran: row.numero_albaran,
+                    numero_lote: row.numero_lote,
+                    cantidad_kg: row.cantidad_kg,
+                    fecha_caducidad: row.fecha_caducidad,
+                    envasado: {
+                        id: row.envasado_id,
+                        nombre: row.envasado_nombre
+                    },
+                    operario: {
+                        id: row.operario_id,
+                        nombre: row.operario_nombre
+                    },
+                    proyecto: {
+                        id: row.proyecto_id,
+                        nombre: row.proyecto_nombre,
+                        nif: row.proyecto_nif,
+                        direccion: row.proyecto_direccion,
+                        codigo_postal: row.proyecto_codigo_postal,
+                        poblacion: row.proyecto_poblacion,
+                        telefono: row.proyecto_telefono,
+                        correo_electronico: row.proyecto_correo_electronico,
+                        logo: row.proyecto_logo
+                    }
+                }));
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: entradas },
                     res,
                     conn
                 );
@@ -46,8 +76,37 @@ export class EntradaProductos {
                 const results = await conn.query(getEntradasByProductoFinalService, [
                     producto_final_id,
                 ]);
+                const entradas: getEntradasInterface[] = results.map((row: any) => ({
+                    id: row.id,
+                    producto_final_id: row.producto_final_id,
+                    fecha_entrada: row.fecha_entrada,
+                    proveedor: row.proveedor,
+                    numero_albaran: row.numero_albaran,
+                    numero_lote: row.numero_lote,
+                    cantidad_kg: row.cantidad_kg,
+                    fecha_caducidad: row.fecha_caducidad,
+                    envasado: {
+                        id: row.envasado_id,
+                        nombre: row.envasado_nombre
+                    },
+                    operario: {
+                        id: row.operario_id,
+                        nombre: row.operario_nombre
+                    },
+                    proyecto: {
+                        id: row.proyecto_id,
+                        nombre: row.proyecto_nombre,
+                        nif: row.proyecto_nif,
+                        direccion: row.proyecto_direccion,
+                        codigo_postal: row.proyecto_codigo_postal,
+                        poblacion: row.proyecto_poblacion,
+                        telefono: row.proyecto_telefono,
+                        correo_electronico: row.proyecto_correo_electronico,
+                        logo: row.proyecto_logo
+                    }
+                }));
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: entradas },
                     res,
                     conn
                 );
@@ -67,8 +126,37 @@ export class EntradaProductos {
                 const results = await conn.query(getEntradasByFechaEntradaService, [
                     fecha_entrada,
                 ]);
+                const entradas: getEntradasInterface[] = results.map((row: any) => ({
+                    id: row.id,
+                    producto_final_id: row.producto_final_id,
+                    fecha_entrada: row.fecha_entrada,
+                    proveedor: row.proveedor,
+                    numero_albaran: row.numero_albaran,
+                    numero_lote: row.numero_lote,
+                    cantidad_kg: row.cantidad_kg,
+                    fecha_caducidad: row.fecha_caducidad,
+                    envasado: {
+                        id: row.envasado_id,
+                        nombre: row.envasado_nombre
+                    },
+                    operario: {
+                        id: row.operario_id,
+                        nombre: row.operario_nombre
+                    },
+                    proyecto: {
+                        id: row.proyecto_id,
+                        nombre: row.proyecto_nombre,
+                        nif: row.proyecto_nif,
+                        direccion: row.proyecto_direccion,
+                        codigo_postal: row.proyecto_codigo_postal,
+                        poblacion: row.proyecto_poblacion,
+                        telefono: row.proyecto_telefono,
+                        correo_electronico: row.proyecto_correo_electronico,
+                        logo: row.proyecto_logo
+                    }
+                }));
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: entradas },
                     res,
                     conn
                 );
@@ -88,8 +176,37 @@ export class EntradaProductos {
                 const results = await conn.query(getEntradasByProveedorService, [
                     proveedor,
                 ]);
+                const entradas: getEntradasInterface[] = results.map((row: any) => ({
+                    id: row.id,
+                    producto_final_id: row.producto_final_id,
+                    fecha_entrada: row.fecha_entrada,
+                    proveedor: row.proveedor,
+                    numero_albaran: row.numero_albaran,
+                    numero_lote: row.numero_lote,
+                    cantidad_kg: row.cantidad_kg,
+                    fecha_caducidad: row.fecha_caducidad,
+                    envasado: {
+                        id: row.envasado_id,
+                        nombre: row.envasado_nombre
+                    },
+                    operario: {
+                        id: row.operario_id,
+                        nombre: row.operario_nombre
+                    },
+                    proyecto: {
+                        id: row.proyecto_id,
+                        nombre: row.proyecto_nombre,
+                        nif: row.proyecto_nif,
+                        direccion: row.proyecto_direccion,
+                        codigo_postal: row.proyecto_codigo_postal,
+                        poblacion: row.proyecto_poblacion,
+                        telefono: row.proyecto_telefono,
+                        correo_electronico: row.proyecto_correo_electronico,
+                        logo: row.proyecto_logo
+                    }
+                }));
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: entradas },
                     res,
                     conn
                 );
@@ -109,8 +226,37 @@ export class EntradaProductos {
                 const results = await conn.query(getEntradasByNumeroAlbaranService, [
                     numero_albaran,
                 ]);
+                const entradas: getEntradasInterface[] = results.map((row: any) => ({
+                    id: row.id,
+                    producto_final_id: row.producto_final_id,
+                    fecha_entrada: row.fecha_entrada,
+                    proveedor: row.proveedor,
+                    numero_albaran: row.numero_albaran,
+                    numero_lote: row.numero_lote,
+                    cantidad_kg: row.cantidad_kg,
+                    fecha_caducidad: row.fecha_caducidad,
+                    envasado: {
+                        id: row.envasado_id,
+                        nombre: row.envasado_nombre
+                    },
+                    operario: {
+                        id: row.operario_id,
+                        nombre: row.operario_nombre
+                    },
+                    proyecto: {
+                        id: row.proyecto_id,
+                        nombre: row.proyecto_nombre,
+                        nif: row.proyecto_nif,
+                        direccion: row.proyecto_direccion,
+                        codigo_postal: row.proyecto_codigo_postal,
+                        poblacion: row.proyecto_poblacion,
+                        telefono: row.proyecto_telefono,
+                        correo_electronico: row.proyecto_correo_electronico,
+                        logo: row.proyecto_logo
+                    }
+                }));
                 resultHandler(
-                    { status: STATUS_OK, success: true, result: results },
+                    { status: STATUS_OK, success: true, result: entradas },
                     res,
                     conn
                 );
