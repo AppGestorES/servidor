@@ -6,4 +6,4 @@ Grupos tienen un conjunto de permisos predefinidos, que se aplican a todos los u
 
 Usuarios pueden tener permisos adicionales definidos directamente, independientes de su grupo.
 
-Cuando se evalúan los permisos de un usuario, se consideran tanto los permisos directos del usuario como los de sus grupos. Si hay permisos contradictorios, los permisos directos del usuario tienen prioridad.
+Cuando se evalúan los permisos de un usuario, se consideran tanto los permisos directos del usuario como los de sus grupos. Si hay permisos contradictorios, los permisos directos del usuario tienen prioridad. 

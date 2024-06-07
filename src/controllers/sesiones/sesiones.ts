@@ -3,7 +3,12 @@ import pool from "@config/db";
 import jwt from "jsonwebtoken";
 
 import tryCatch, { tryCatchDefault } from "@utils/tryCatch";
-import { STATUS_NOT_FOUND, STATUS_NO_ACCESS, STATUS_OK, resultHandler } from "@middlewares/resultHandler";
+import {
+    STATUS_NOT_FOUND,
+    STATUS_NO_ACCESS,
+    STATUS_OK,
+    resultHandler,
+} from "@middlewares/resultHandler";
 
 import {
     postSesionesService,
@@ -74,10 +79,19 @@ export class Sesiones {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const { nombre, apellido, contrasena, identificador } =
-                    req.body as registrarSesionInterface;
+                const {
+                    nombre,
+                    apellido,
+                    contrasena,
+                    identificador,
+                    id_proyecto,
+                } = req.body as registrarSesionInterface;
                 const results = await conn.query(postUsuariosService, [
-                    nombre, apellido, contrasena, identificador, 0
+                    nombre,
+                    apellido,
+                    contrasena,
+                    identificador,
+                    id_proyecto,
                 ]);
 
                 if (results.insertId > 0) {
@@ -105,6 +119,34 @@ export class Sesiones {
                 }
 
                 await conn.release();
+            }
+        )(req, res, next);
+    }
+
+    async verificarToken(req: Request, res: Response, next: NextFunction) {
+        await tryCatch(
+            async (req: Request, res: Response, next: NextFunction) => {
+                const token = req.headers.authorization;
+                try {
+                    const decoded = jwt.verify(token!, process.env.JWT_SECRET!);
+                    return resultHandler(
+                        {
+                            status: STATUS_OK,
+                            success: true,
+                            result: "Token válido.",
+                        },
+                        res
+                    );
+                } catch (error) {
+                    return resultHandler(
+                        {
+                            status: STATUS_NO_ACCESS,
+                            success: false,
+                            result: "Token inválido.",
+                        },
+                        res
+                    );
+                }
             }
         )(req, res, next);
     }

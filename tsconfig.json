@@ -12,6 +12,8 @@
             "@types/*": ["src/types/*"],
             "@utils/*": ["src/utils/*"]
         },
+        "typeRoots": ["./node_modules/@types", "./src/types"],
+        "types": ["node"],
         "target": "es6",
         "module": "commonjs",
         "rootDir": "./src",
@@ -20,6 +22,17 @@
         "strict": true,
         "moduleResolution": "node"
     },
-    "include": ["src/**/*", "src/types/**/*"],
+    "_moduleAliases": {
+        "@config": "dist/config",
+        "@controllers": "dist/controllers",
+        "@interfaces": "dist/interfaces",
+        "@middlewares": "dist/middlewares",
+        "@models": "dist/models",
+        "@routes": "dist/routes",
+        "@services": "dist/services",
+        "@types": "dist/types",
+        "@utils": "dist/utils"
+    },
+    "include": ["src/**/*", "src/types/global.d.ts"],
     "exclude": ["node_modules", "dist"]
 }

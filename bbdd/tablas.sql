@@ -1,4 +1,4 @@
-CREATE TABLE proyecto (
+CREATE TABLE IF NOT EXISTS proyectos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     nif VARCHAR(9),
@@ -10,34 +10,34 @@ CREATE TABLE proyecto (
     logo VARCHAR(255)
 );
 
-CREATE TABLE materias_primas (
+CREATE TABLE IF NOT EXISTS materias_primas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     caducidad INT(10) NOT NULL,
     stock_kgs DECIMAL(10, 2),
     id_proyecto INT NOT NULL,
-    CONSTRAINT fk_materias_primas_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_materias_primas_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE formulas (
+CREATE TABLE IF NOT EXISTS formulas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     caducidad INT(10) NOT NULL,
     id_proyecto INT NOT NULL,
-    CONSTRAINT fk_formulas_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_formulas_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE productos_finales (
+CREATE TABLE IF NOT EXISTS productos_finales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     formula_id INT NOT NULL,
     caducidad INT(10) NOT NULL,
     id_proyecto INT NOT NULL,
     CONSTRAINT fk_productos_finales_formula FOREIGN KEY (formula_id) REFERENCES formulas(id),
-    CONSTRAINT fk_productos_finales_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_productos_finales_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE ingredientes (
+CREATE TABLE IF NOT EXISTS ingredientes (
     formula_id INT,
     materia_prima_id INT,
     cantidad_kgs DECIMAL(10, 2),
@@ -45,52 +45,52 @@ CREATE TABLE ingredientes (
     PRIMARY KEY (formula_id, materia_prima_id),
     CONSTRAINT fk_ingredientes_formula FOREIGN KEY (formula_id) REFERENCES formulas(id),
     CONSTRAINT fk_ingredientes_materia_prima FOREIGN KEY (materia_prima_id) REFERENCES materias_primas(id),
-    CONSTRAINT fk_ingredientes_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_ingredientes_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE proveedores (
+CREATE TABLE IF NOT EXISTS proveedores (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     id_proyecto INT NOT NULL,
-    CONSTRAINT fk_proveedores_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_proveedores_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE envasado (
+CREATE TABLE IF NOT EXISTS envasados (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     id_proyecto INT NOT NULL,
-    CONSTRAINT fk_envasado_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_envasado_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE operarios (
+CREATE TABLE IF NOT EXISTS operarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     id_proyecto INT NOT NULL,
-    CONSTRAINT fk_operarios_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_operarios_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE formatos (
+CREATE TABLE IF NOT EXISTS formatos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     id_proyecto INT NOT NULL,
-    CONSTRAINT fk_formatos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_formatos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE destinos (
+CREATE TABLE IF NOT EXISTS destinos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     id_proyecto INT NOT NULL,
-    CONSTRAINT fk_destinos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_destinos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE vehiculos (
+CREATE TABLE IF NOT EXISTS vehiculos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     matricula VARCHAR(20) NOT NULL,
     id_proyecto INT NOT NULL,
-    CONSTRAINT fk_vehiculos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_vehiculos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE entrada_de_productos (
+CREATE TABLE IF NOT EXISTS entrada_de_productos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     producto_final_id INT NOT NULL,
     fecha_entrada INT(10) NOT NULL,
@@ -104,11 +104,11 @@ CREATE TABLE entrada_de_productos (
     id_proyecto INT NOT NULL,
     CONSTRAINT fk_entrada_de_productos_producto_final FOREIGN KEY (producto_final_id) REFERENCES productos_finales(id),
     CONSTRAINT fk_entrada_de_productos_operario FOREIGN KEY (operario_id) REFERENCES operarios(id),
-    CONSTRAINT fk_entrada_de_productos_envasado FOREIGN KEY (envasado_id) REFERENCES envasado(id),
-    CONSTRAINT fk_entrada_de_productos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_entrada_de_productos_envasado FOREIGN KEY (envasado_id) REFERENCES envasados(id),
+    CONSTRAINT fk_entrada_de_productos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE salida_de_productos (
+CREATE TABLE IF NOT EXISTS salida_de_productos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     producto_final_id INT NOT NULL,
     formula_id INT NOT NULL,
@@ -123,14 +123,14 @@ CREATE TABLE salida_de_productos (
     id_proyecto INT NOT NULL,
     CONSTRAINT fk_salida_de_productos_producto_final FOREIGN KEY (producto_final_id) REFERENCES productos_finales(id),
     CONSTRAINT fk_salida_de_productos_formula FOREIGN KEY (formula_id) REFERENCES formulas(id),
-    CONSTRAINT fk_salida_de_productos_envasado FOREIGN KEY (envasado_id) REFERENCES envasado(id),
+    CONSTRAINT fk_salida_de_productos_envasado FOREIGN KEY (envasado_id) REFERENCES envasados(id),
     CONSTRAINT fk_salida_de_productos_formato FOREIGN KEY (formato_id) REFERENCES formatos(id),
     CONSTRAINT fk_salida_de_productos_destino FOREIGN KEY (destino_id) REFERENCES destinos(id),
     CONSTRAINT fk_salida_de_productos_vehiculo FOREIGN KEY (vehiculo_id) REFERENCES vehiculos(id),
-    CONSTRAINT fk_salida_de_productos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_salida_de_productos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE usuarios (
+CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
@@ -138,55 +138,55 @@ CREATE TABLE usuarios (
     contrasena VARCHAR(100) NOT NULL,
     identificador VARCHAR(100) NOT NULL UNIQUE,
     id_proyecto INT NOT NULL,
-    CONSTRAINT fk_usuarios_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_usuarios_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE grupos (
+CREATE TABLE IF NOT EXISTS grupos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     id_proyecto INT NOT NULL,
-    CONSTRAINT fk_grupos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_grupos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE permisos (
+CREATE TABLE IF NOT EXISTS permisos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     descripcion VARCHAR(255),
     id_proyecto INT NOT NULL,
-    CONSTRAINT fk_permisos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id)
+    CONSTRAINT fk_permisos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
 );
 
-CREATE TABLE usuarios_grupos (
+CREATE TABLE IF NOT EXISTS usuarios_grupos (
     usuario_id INT,
     grupo_id INT,
     id_proyecto INT NOT NULL,
-    CONSTRAINT fk_usuarios_grupos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id),
+    CONSTRAINT fk_usuarios_grupos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id),
     PRIMARY KEY (usuario_id, grupo_id),
     CONSTRAINT fk_usuarios_grupos_usuarios FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     CONSTRAINT fk_usuarios_grupos_grupos FOREIGN KEY (grupo_id) REFERENCES grupos(id)
 );
 
-CREATE TABLE grupos_permisos (
+CREATE TABLE IF NOT EXISTS grupos_permisos (
     grupo_id INT,
     permiso_id INT,
     id_proyecto INT NOT NULL,
-    CONSTRAINT fk_grupos_permisos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id),
+    CONSTRAINT fk_grupos_permisos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id),
     PRIMARY KEY (grupo_id, permiso_id),
     CONSTRAINT fk_grupos_permisos_grupos FOREIGN KEY (grupo_id) REFERENCES grupos(id),
     CONSTRAINT fk_grupos_permisos_permisos FOREIGN KEY (permiso_id) REFERENCES permisos(id)
 );
 
-CREATE TABLE usuarios_permisos (
+CREATE TABLE IF NOT EXISTS usuarios_permisos (
     usuario_id INT,
     permiso_id INT,
     id_proyecto INT NOT NULL,
-    CONSTRAINT fk_usuarios_permisos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyecto(id),
+    CONSTRAINT fk_usuarios_permisos_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id),
     PRIMARY KEY (usuario_id, permiso_id),
     CONSTRAINT fk_usuarios_permisos_usuarios FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     CONSTRAINT fk_usuarios_permisos_permisos FOREIGN KEY (permiso_id) REFERENCES permisos(id)
 );
 
-CREATE TABLE logs (
+CREATE TABLE IF NOT EXISTS logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     fecha INT(10) NOT NULL,
     tipo VARCHAR(50),
@@ -196,7 +196,7 @@ CREATE TABLE logs (
     CONSTRAINT fk_logs_usuario FOREIGN KEY (usuario) REFERENCES usuarios(id)
 );
 
-CREATE TABLE sesiones (
+CREATE TABLE IF NOT EXISTS sesiones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     token VARCHAR(255) NOT NULL,
     fecha INT(10) NOT NULL,
