@@ -1,5 +1,4 @@
 import "dotenv/config";
-
 import express from "express";
 import swaggerUi from 'swagger-ui-express';
 import cors from "cors";
@@ -15,6 +14,13 @@ const app = express();
 
 const swaggerDocument = JSON.parse(fs.readFileSync(path.join(__dirname, 'swagger.json'), 'utf8'));
 
+// Asegurarse de que el directorio de logs existe
+const logDirectory = path.join(__dirname, 'logs');
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+
+// Crear un write stream (en modo append) para el archivo de logs
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'logs', 'access.log'), { flags: 'a' });
+
 app.use(express.json());
 app.use(
     cors({
@@ -24,10 +30,13 @@ app.use(
     })
 );
 app.use(helmet());
-app.use(morgan(process.env.TIPO_LOGS! || "dev"));
+
+// Configurar morgan para que registre en la consola y en el archivo de logs
+app.use(morgan(process.env.TIPO_LOGS! || "dev", { stream: accessLogStream }));
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use(router)
-app.use(errorHandler)
+app.use(router);
+app.use(errorHandler);
 
 export default app;

@@ -40,3 +40,6 @@ next-env.d.ts
 datos_mariadb
 node_modules
 .env
+
+logs
+access.log
