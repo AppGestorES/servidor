@@ -19,8 +19,8 @@ import {
     iniciarSesionInterface,
     registrarSesionInterface,
 } from "@interfaces/sesiones.interface";
-import { postUsuariosInterface } from "@interfaces/usuarios.interface";
-import { postUsuariosService } from "@services/usuariosService";
+import { getUsuariosInterface, postUsuariosInterface } from "@interfaces/usuarios.interface";
+import { getUsuarioByTokenService, postUsuariosService } from "@services/usuariosService";
 
 export class Sesiones {
     async iniciarSesion(req: Request, res: Response, next: NextFunction) {
@@ -117,8 +117,6 @@ export class Sesiones {
                         conn
                     );
                 }
-
-                await conn.release();
             }
         )(req, res, next);
     }
@@ -129,14 +127,42 @@ export class Sesiones {
                 const token = req.headers.authorization;
                 try {
                     const decoded = jwt.verify(token!, process.env.JWT_SECRET!);
-                    return resultHandler(
-                        {
-                            status: STATUS_OK,
-                            success: true,
-                            result: "Token válido.",
-                        },
-                        res
+
+                    const conn = await pool.getConnection();
+
+                    const results = await conn.query(getUsuarioByTokenService, [
+                        token!,
+                    ]);
+
+                    console.log(token)
+
+                    const usuarios: getUsuariosInterface[] = results.map(
+                        (row: any) => ({
+                            id: row.id,
+                            nombre: row.nombre,
+                            apellido: row.apellido,
+                            foto: row.foto,
+                            identificador: row.identificador,
+                            proyecto: {
+                                id: row.proyecto_id,
+                                nombre: row.proyecto_nombre,
+                                nif: row.proyecto_nif,
+                                direccion: row.proyecto_direccion,
+                                codigo_postal: row.proyecto_codigo_postal,
+                                poblacion: row.proyecto_poblacion,
+                                telefono: row.proyecto_telefono,
+                                correo_electronico: row.proyecto_correo_electronico,
+                                logo: row.proyecto_logo,
+                            },
+                        })
                     );
+                    resultHandler(
+                        { status: STATUS_OK, success: true, result: usuarios },
+                        res,
+                        conn
+                    );
+
+                    await conn.release();
                 } catch (error) {
                     return resultHandler(
                         {
