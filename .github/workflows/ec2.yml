@@ -24,10 +24,10 @@ jobs:
         eval "$(ssh-agent -s)"
         ssh-add /tmp/ssh_key.pem
 
-    - name: Add SSH key to known hosts
+    - name: Add EC2 host to known hosts
       run: |
         mkdir -p ~/.ssh
-        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts || exit 0
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
     - name: Deploy to EC2
       uses: appleboy/ssh-action@master
@@ -35,8 +35,14 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ubuntu
         key: ${{ secrets.EC2_SSH_KEY_PEM }}
+        port: 22
+        script_timeout: 120s
         script: |
-          cd /home/ubuntu/appgestor/
-          sudo git pull origin main
+          cd /home/ubuntu/appgestor
+          git reset --hard HEAD  # Restablece el directorio de trabajo al último commit
+          git clean -fd  # Elimina archivos no rastreados
+          git pull origin main
+          sudo systemctl stop nginx  # Detiene Nginx para liberar el puerto 80
           sudo docker-compose down
           sudo docker-compose up -d --build
+          sudo systemctl start nginx  # Reinicia Nginx después de iniciar Docker Compose
