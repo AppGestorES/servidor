@@ -14,12 +14,10 @@ RUN npm install
 COPY . .
 
 # Compila el proyecto TypeScript
-#RUN npm run build
+# RUN npm run build
 
 # Expone el puerto en el que se ejecuta la aplicación
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
-
 # Comando para ejecutar la aplicación
-#CMD ["node", "dist/server.js"]
+CMD ["npm", "run", "dev"]
