@@ -296,6 +296,8 @@ export class Usuarios {
                     contrasena,
                     identificador,
                     id_proyecto,
+                    es_admin,
+                    proyecto_admin
                 } = req.body as putUsuariosInterface;
                 const { id } = req.params;
                 const results = await conn.query(putUsuariosService, [
@@ -305,7 +307,9 @@ export class Usuarios {
                     contrasena,
                     identificador,
                     id_proyecto,
-                    id,
+                    es_admin,
+                    proyecto_admin,
+                    id
                 ]);
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },

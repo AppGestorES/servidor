@@ -27,8 +27,6 @@ export interface postUsuariosInterface {
     apellido: string;
     contrasena: string;
     identificador: string;
-    es_admin: number;
-    proyecto_admin: number;
 }
 
 export interface putUsuariosInterface {
