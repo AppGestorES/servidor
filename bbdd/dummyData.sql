@@ -64,9 +64,9 @@ INSERT INTO salida_de_productos (producto_final_id, formula_id, numero_lote, fec
 (2, 2, 'L456', 1672531199, 150.15, 1682531199, 2, 2, 2, 2, 2);
 
 -- Insertar datos en la tabla usuarios
-INSERT INTO usuarios (nombre, apellido, foto, contrasena, identificador, id_proyecto, proyecto_admin) VALUES
-('Usuario 1', 'Apellido 1', 'foto1.png', 'contrasena1', 'id1', 0),
-('Usuario 2', 'Apellido 2', 'foto2.png', 'contrasena2', 'id2', 0);
+INSERT INTO usuarios (nombre, apellido, foto, contrasena, identificador) VALUES
+('Usuario 1', 'Apellido 1', 'foto1.png', 'contrasena1', 'id21'),
+('Usuario 2', 'Apellido 2', 'foto2.png', 'contrasena2', 'id32');
 
 -- Insertar datos en la tabla grupos
 INSERT INTO grupos (nombre, id_proyecto) VALUES
