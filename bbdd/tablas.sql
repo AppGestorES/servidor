@@ -137,8 +137,11 @@ CREATE TABLE IF NOT EXISTS usuarios (
     foto VARCHAR(100),
     contrasena VARCHAR(100) NOT NULL,
     identificador VARCHAR(100) NOT NULL UNIQUE,
-    id_proyecto INT NOT NULL,
-    CONSTRAINT fk_usuarios_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id)
+    id_proyecto INT,
+    es_admin INT DEFAULT 0,
+    proyecto_admin INT,
+    CONSTRAINT fk_usuarios_proyecto FOREIGN KEY (id_proyecto) REFERENCES proyectos(id),
+    CONSTRAINT fk_usuariosadmin_proyecto FOREIGN KEY (proyecto_admin) REFERENCES proyectos(id)
 );
 
 CREATE TABLE IF NOT EXISTS grupos (
