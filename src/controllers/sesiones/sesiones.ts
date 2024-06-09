@@ -140,7 +140,7 @@ export class Sesiones {
                         token!,
                     ]);
 
-                    console.log(token);
+                    console.log(results);
 
                     const usuarios: getUsuariosInterface[] = results.map(
                         (row: any) => ({
