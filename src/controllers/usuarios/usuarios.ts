@@ -22,6 +22,7 @@ import {
     getUsuariosInterface,
 } from "@interfaces/usuarios.interface";
 import { Sesiones } from "@controllers/sesiones/sesiones";
+import { deleteSesionService } from "@services/sesionesService";
 
 export class Usuarios {
     async getUsuarios(req: Request, res: Response, next: NextFunction) {
@@ -333,6 +334,7 @@ export class Usuarios {
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
                 const { id } = req.params;
+                await conn.query(deleteSesionService, [id]);
                 const results = await conn.query(deleteUsuariosService, [id]);
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
