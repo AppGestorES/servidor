@@ -6,7 +6,6 @@ import { getUserWithPermissionsService } from "@services/permisosService";
 
 async function getUserPermissions(userId: number): Promise<string[]> {
     const result = await pool.query(getUserWithPermissionsService, [userId]);
-    console.log(result);
     const permissions = new Set<string>();
 
     if(result.length > 0){
@@ -29,10 +28,7 @@ function checkPermission(requiredPermission: string) {
 
         const userId = decoded.usuario.id;
 
-        console.log(userId)
         const userPermissions = await getUserPermissions(userId);
-
-        console.log(userPermissions);
 
         if (userPermissions.includes(requiredPermission)) {
             next();
