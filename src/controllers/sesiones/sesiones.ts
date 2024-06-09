@@ -19,8 +19,14 @@ import {
     iniciarSesionInterface,
     registrarSesionInterface,
 } from "@interfaces/sesiones.interface";
-import { getUsuariosInterface, postUsuariosInterface } from "@interfaces/usuarios.interface";
-import { getUsuarioByTokenService, postUsuariosService } from "@services/usuariosService";
+import {
+    getUsuariosInterface,
+    postUsuariosInterface,
+} from "@interfaces/usuarios.interface";
+import {
+    getUsuarioByTokenService,
+    postUsuariosService,
+} from "@services/usuariosService";
 
 export class Sesiones {
     async iniciarSesion(req: Request, res: Response, next: NextFunction) {
@@ -134,7 +140,7 @@ export class Sesiones {
                         token!,
                     ]);
 
-                    console.log(token)
+                    console.log(token);
 
                     const usuarios: getUsuariosInterface[] = results.map(
                         (row: any) => ({
@@ -143,6 +149,8 @@ export class Sesiones {
                             apellido: row.apellido,
                             foto: row.foto,
                             identificador: row.identificador,
+                            es_admin: row.es_admin,
+                            proyecto_admin: row.proyecto_admin,
                             proyecto: {
                                 id: row.proyecto_id,
                                 nombre: row.proyecto_nombre,
@@ -151,7 +159,8 @@ export class Sesiones {
                                 codigo_postal: row.proyecto_codigo_postal,
                                 poblacion: row.proyecto_poblacion,
                                 telefono: row.proyecto_telefono,
-                                correo_electronico: row.proyecto_correo_electronico,
+                                correo_electronico:
+                                    row.proyecto_correo_electronico,
                                 logo: row.proyecto_logo,
                             },
                         })
