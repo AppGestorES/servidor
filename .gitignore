@@ -25,6 +25,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+dist
+
 # local env files
 .env*.local
 
@@ -38,3 +40,6 @@ next-env.d.ts
 datos_mariadb
 node_modules
 .env
+
+logs
+access.log

@@ -35,4 +35,5 @@ export interface registrarSesionInterface {
     apellido: string;
     contrasena: string;
     identificador: string;
+    id_proyecto: number;
 }

@@ -10,23 +10,27 @@ import sesiones from "@routes/v1/sesiones";
 import productosFinales from "@routes/v1/productosFinales";
 import operarios from "@routes/v1/operarios";
 import ingredientes from "@routes/v1/ingredientes";
-import envasados from "@routes/v1/envasados"
-import entradaProductos from '@routes/v1/entradaProductos';
+import envasados from "@routes/v1/envasados";
+import entradaProductos from "@routes/v1/entradaProductos";
 import logs from "@routes/v1/logs";
 import destinos from "@routes/v1/destinos";
-import formatos from "@routes/v1/formatos"
+import formatos from "@routes/v1/formatos";
 import proveedores from "@routes/v1/proveedores";
-import formulas from "@routes/v1/formulas"
-import vehiculos from "@routes/v1/vehiculos"
+import formulas from "@routes/v1/formulas";
+import vehiculos from "@routes/v1/vehiculos";
+
+import { authMiddleware } from "@middlewares/auth";
 
 const router = Router();
 
+router.use(sesiones);
+router.use(pages);
+router.use(authMiddleware);
 router.use(materiasPrimas);
 router.use(proyectos);
 router.use(usuarios);
 router.use(permisosRouter);
 router.use(salidaProductos);
-router.use(sesiones);
 router.use(productosFinales);
 router.use(operarios);
 router.use(ingredientes);
@@ -38,6 +42,5 @@ router.use(formatos);
 router.use(proveedores);
 router.use(formulas);
 router.use(vehiculos);
-router.use(pages);
 
 export default router;

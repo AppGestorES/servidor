@@ -3,7 +3,12 @@ import pool from "@config/db";
 import jwt from "jsonwebtoken";
 
 import tryCatch, { tryCatchDefault } from "@utils/tryCatch";
-import { STATUS_NOT_FOUND, STATUS_NO_ACCESS, STATUS_OK, resultHandler } from "@middlewares/resultHandler";
+import {
+    STATUS_NOT_FOUND,
+    STATUS_NO_ACCESS,
+    STATUS_OK,
+    resultHandler,
+} from "@middlewares/resultHandler";
 
 import {
     postSesionesService,
@@ -14,8 +19,8 @@ import {
     iniciarSesionInterface,
     registrarSesionInterface,
 } from "@interfaces/sesiones.interface";
-import { postUsuariosInterface } from "@interfaces/usuarios.interface";
-import { postUsuariosService } from "@services/usuariosService";
+import { getUsuariosInterface, postUsuariosInterface } from "@interfaces/usuarios.interface";
+import { getUsuarioByTokenService, postUsuariosService } from "@services/usuariosService";
 
 export class Sesiones {
     async iniciarSesion(req: Request, res: Response, next: NextFunction) {
@@ -74,10 +79,19 @@ export class Sesiones {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const { nombre, apellido, contrasena, identificador } =
-                    req.body as registrarSesionInterface;
+                const {
+                    nombre,
+                    apellido,
+                    contrasena,
+                    identificador,
+                    id_proyecto,
+                } = req.body as registrarSesionInterface;
                 const results = await conn.query(postUsuariosService, [
-                    nombre, apellido, contrasena, identificador, 0
+                    nombre,
+                    apellido,
+                    contrasena,
+                    identificador,
+                    id_proyecto,
                 ]);
 
                 if (results.insertId > 0) {
@@ -103,8 +117,62 @@ export class Sesiones {
                         conn
                     );
                 }
+            }
+        )(req, res, next);
+    }
 
-                await conn.release();
+    async verificarToken(req: Request, res: Response, next: NextFunction) {
+        await tryCatch(
+            async (req: Request, res: Response, next: NextFunction) => {
+                const token = req.headers.authorization;
+                try {
+                    const decoded = jwt.verify(token!, process.env.JWT_SECRET!);
+
+                    const conn = await pool.getConnection();
+
+                    const results = await conn.query(getUsuarioByTokenService, [
+                        token!,
+                    ]);
+
+                    console.log(token)
+
+                    const usuarios: getUsuariosInterface[] = results.map(
+                        (row: any) => ({
+                            id: row.id,
+                            nombre: row.nombre,
+                            apellido: row.apellido,
+                            foto: row.foto,
+                            identificador: row.identificador,
+                            proyecto: {
+                                id: row.proyecto_id,
+                                nombre: row.proyecto_nombre,
+                                nif: row.proyecto_nif,
+                                direccion: row.proyecto_direccion,
+                                codigo_postal: row.proyecto_codigo_postal,
+                                poblacion: row.proyecto_poblacion,
+                                telefono: row.proyecto_telefono,
+                                correo_electronico: row.proyecto_correo_electronico,
+                                logo: row.proyecto_logo,
+                            },
+                        })
+                    );
+                    resultHandler(
+                        { status: STATUS_OK, success: true, result: usuarios },
+                        res,
+                        conn
+                    );
+
+                    await conn.release();
+                } catch (error) {
+                    return resultHandler(
+                        {
+                            status: STATUS_NO_ACCESS,
+                            success: false,
+                            result: "Token inválido.",
+                        },
+                        res
+                    );
+                }
             }
         )(req, res, next);
     }

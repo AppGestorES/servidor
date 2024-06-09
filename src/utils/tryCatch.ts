@@ -9,11 +9,12 @@ const tryCatch =
         } catch (error: any) {
             switch(error.code){
                 case "ER_DUP_ENTRY":
-                    return next(new DuplicateEntryError("El usuario ya existe."));
+                    return next(new DuplicateEntryError("El usuario ya existe. " + error.sqlMessage));
                 case "ER_ROW_IS_REFERENCED_2":
-                    return next(new PrimaryKeyEntryError("La clave principal está siendo usada."));
+                    return next(new PrimaryKeyEntryError("La clave principal está siendo usada. " + error.sqlMessage));
                 case "ER_NO_REFERENCED_ROW_2":
-                    return next(new ForeignKeyEntryError("La clave foránea no existe."));
+                    console.log(error)
+                    return next(new ForeignKeyEntryError("La clave foránea no existe. " + error.sqlMessage));
             }
             console.log(error);
             return next(error);
