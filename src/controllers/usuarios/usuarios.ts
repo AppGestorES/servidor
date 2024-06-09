@@ -36,6 +36,8 @@ export class Usuarios {
                         apellido: row.apellido,
                         foto: row.foto,
                         identificador: row.identificador,
+                        es_admin: row.es_admin,
+                        proyecto_admin: row.proyecto_admin,
                         proyecto: {
                             id: row.proyecto_id,
                             nombre: row.proyecto_nombre,
@@ -73,6 +75,8 @@ export class Usuarios {
                         apellido: row.apellido,
                         foto: row.foto,
                         identificador: row.identificador,
+                        es_admin: row.es_admin,
+                        proyecto_admin: row.proyecto_admin,
                         proyecto: {
                             id: row.proyecto_id,
                             nombre: row.proyecto_nombre,
@@ -109,6 +113,8 @@ export class Usuarios {
                         apellido: row.apellido,
                         foto: row.foto,
                         identificador: row.identificador,
+                        es_admin: row.es_admin,
+                        proyecto_admin: row.proyecto_admin,
                         proyecto: {
                             id: row.proyecto_id,
                             nombre: row.proyecto_nombre,
@@ -150,6 +156,8 @@ export class Usuarios {
                         apellido: row.apellido,
                         foto: row.foto,
                         identificador: row.identificador,
+                        es_admin: row.es_admin,
+                        proyecto_admin: row.proyecto_admin,
                         proyecto: {
                             id: row.proyecto_id,
                             nombre: row.proyecto_nombre,
@@ -192,6 +200,8 @@ export class Usuarios {
                         apellido: row.apellido,
                         foto: row.foto,
                         identificador: row.identificador,
+                        es_admin: row.es_admin,
+                        proyecto_admin: row.proyecto_admin,
                         proyecto: {
                             id: row.proyecto_id,
                             nombre: row.proyecto_nombre,
@@ -233,6 +243,8 @@ export class Usuarios {
                         apellido: row.apellido,
                         foto: row.foto,
                         identificador: row.identificador,
+                        es_admin: row.es_admin,
+                        proyecto_admin: row.proyecto_admin,
                         proyecto: {
                             id: row.proyecto_id,
                             nombre: row.proyecto_nombre,
@@ -259,17 +271,13 @@ export class Usuarios {
         await tryCatch(
             async (req: Request, res: Response, next: NextFunction) => {
                 const conn = await pool.getConnection();
-                const {
-                    nombre,
-                    apellido,
-                    contrasena,
-                    identificador
-                } = req.body as postUsuariosInterface;
+                const { nombre, apellido, contrasena, identificador } =
+                    req.body as postUsuariosInterface;
                 const results = await conn.query(postUsuariosService, [
                     nombre,
                     apellido,
                     contrasena,
-                    identificador
+                    identificador,
                 ]);
                 resultHandler(
                     {
@@ -297,7 +305,7 @@ export class Usuarios {
                     identificador,
                     id_proyecto,
                     es_admin,
-                    proyecto_admin
+                    proyecto_admin,
                 } = req.body as putUsuariosInterface;
                 const { id } = req.params;
                 const results = await conn.query(putUsuariosService, [
@@ -309,7 +317,7 @@ export class Usuarios {
                     id_proyecto,
                     es_admin,
                     proyecto_admin,
-                    id
+                    id,
                 ]);
                 resultHandler(
                     { status: STATUS_OK, success: true, result: results },
