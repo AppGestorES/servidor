@@ -13,7 +13,6 @@ const tryCatch =
                 case "ER_ROW_IS_REFERENCED_2":
                     return next(new PrimaryKeyEntryError("La clave principal está siendo usada. " + error.sqlMessage));
                 case "ER_NO_REFERENCED_ROW_2":
-                    console.log(error)
                     return next(new ForeignKeyEntryError("La clave foránea no existe. " + error.sqlMessage));
             }
             console.log(error);
