@@ -9,6 +9,6 @@ export default async function HealthCheck(
     next: NextFunction
 ) {
     await tryCatch(async (req: Request, res: Response, next: NextFunction) => {
-        resultHandler({ status: 200, success: true, result: "OK TEST" }, res);
+        resultHandler({ status: 200, success: true, result: "OK" }, res);
     })(req, res, next);
 }
