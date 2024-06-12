@@ -42,5 +42,5 @@ jobs:
           git reset --hard HEAD
           git clean -fd
           git pull origin main
-          docker build -t appgestorapi .
-          docker-compose up -d --force-recreate appgestorapi
+          sudo docker build -t appgestorapi .
+          sudo docker-compose up -d --force-recreate appgestorapi
