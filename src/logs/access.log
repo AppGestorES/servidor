@@ -1,0 +1,14 @@
+[0mGET /verificartoken [32m200[0m 35.627 ms - 303[0m
+[0mGET /verificartoken [32m200[0m 36.561 ms - 338[0m
+[0mGET /verificartoken [32m200[0m 101.709 ms - 338[0m
+[0mGET /usuarios [32m200[0m 28.979 ms - 41[0m
+[0mGET /usuarios [32m200[0m 34.684 ms - 41[0m
+[0mGET /usuarios [32m200[0m 8.270 ms - 755[0m
+[0mGET /usuarios [32m200[0m 69.799 ms - 1923[0m
+[0mDELETE /usuarios?i=5 [33m401[0m 0.355 ms - 74[0m
+[0mDELETE /usuarios?i=5 [33m404[0m 4.138 ms - 150[0m
+[0mDELETE /usuarios?i=5 [33m404[0m 2.106 ms - 150[0m
+[0mGET /usuarios?i=5 [32m200[0m 3.240 ms - 1923[0m
+[0mDELETE /usuarios?id=5 [33m404[0m 1.078 ms - 150[0m
+[0mDELETE /usuarios/as [32m200[0m 13.081 ms - 90[0m
+[0mDELETE /usuarios/5 [32m200[0m 3.687 ms - 90[0m

@@ -38,14 +38,9 @@ jobs:
         port: 22
         command_timeout: 120s
         script: |
-          cd /home/ubuntu/appgestor
-          git reset --hard HEAD  # Restablece el directorio de trabajo al último commit
-          git clean -fd  # Elimina archivos no rastreados
+          cd /home/ubuntu/appgestor/servidor
+          git reset --hard HEAD
+          git clean -fd
           git pull origin main
-          sudo systemctl stop nginx  # Detiene Nginx para liberar el puerto 80
-          sudo systemctl disable nginx  # Deshabilita Nginx para que no se inicie automáticamente
-          sudo docker-compose down
-          sudo docker ps -q --filter "status=running" | xargs -r sudo docker stop  # Detiene todos los contenedores en ejecución
-          sudo ss -tuln | grep :80 | awk '{print $5}' | cut -d: -f1 | xargs -r sudo kill -9  # Mata cualquier proceso que esté usando el puerto 80
-          sudo docker-compose up -d --build
-          sudo systemctl start nginx
+          docker build -t appgestorapi .
+          docker-compose up -d --force-recreate appgestorapi
