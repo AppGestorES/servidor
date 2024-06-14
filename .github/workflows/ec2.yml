@@ -44,8 +44,22 @@ jobs:
           git pull origin main
           sudo docker-compose down
           sudo docker build -t appgestorapi .
+          
+          cd /home/ubuntu/appgestor/web
+          git reset --hard HEAD
+          git clean -fd
+          git pull origin main
+          sudo docker build -t appgestorweb .
+
+          cd /home/ubuntu/appgestor/cliente
+          git reset --hard HEAD
+          git clean -fd
+          git pull origin main
+          sudo docker build -t appgestorcliente .
+
+          cd /home/ubuntu/appgestor/servidor
           sudo docker-compose up -d database
           sudo docker-compose up -d --force-recreate api
-          sudo docker-compose up -d cliente
-          sudo docker-compose up -d web
+          sudo docker-compose up -d --force-recreate cliente
+          sudo docker-compose up -d --force-recreate web
           sudo systemctl restart nginx
