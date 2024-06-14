@@ -58,8 +58,5 @@ jobs:
           sudo docker build -t appgestorcliente .
 
           cd /home/ubuntu/appgestor/servidor
-          sudo docker-compose up -d database
-          sudo docker-compose up -d --force-recreate api
-          sudo docker-compose up -d --force-recreate cliente
-          sudo docker-compose up -d --force-recreate web
+          sudo docker-compose up -d --force-recreate
           sudo systemctl restart nginx
